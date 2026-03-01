@@ -1,10 +1,457 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Imran Showroom</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showroom Pro | Premium Locator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --accent-color: #c5a059; /* Gold accent for premium feel */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        /* Navbar Styling */
+        nav {
+            background: var(--primary-color);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .admin-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .admin-link:hover { color: white; }
+
+        /* Main Hero Section */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        p { color: #666; margin-bottom: 30px; }
+
+        /* Modern Search Bar */
+        .search-box {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            outline: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 20px rgba(197, 160, 89, 0.2);
+        }
+
+        /* Loading & Results */
+        .status {
+            font-style: italic;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        /* Grid for multiple cards */
+        .locations-grid {
+            display: none; /* Initially hidden */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .location-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--accent-color);
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+
+        .location-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .btn-back {
+            background: #eee;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+
+        .btn-back:hover { background: #ddd; }
+
+        /* New Button Style for Open Door */
+        .btn-open-door {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+            border: 1px solid var(--accent-color);
+        }
+
+        .btn-open-door:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        /* Admin Panel Styling */
+        #adminPanel {
+            display: none;
+            background: #fff;
+            padding: 20px;
+            margin-top: 50px;
+            border: 2px dashed var(--accent-color);
+            border-radius: 15px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .admin-input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+    </style>
 </head>
 <body>
-    <h1>Welcome to Imran Showroom 🎉</h1>
-    <p>Website successfully working.</p>
+
+    <nav>
+        <div class="logo">SHOWROOM<span style="color:var(--accent-color)">PRO</span></div>
+        <a href="#" class="admin-link" onclick="toggleAdmin()">Admin Login</a>
+    </nav>
+
+    <div class="container" id="mainHome" style="margin-top: 80px;">
+        <h1 style="font-size: 4rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 20px;">
+            SHOWROOM<span style="color:var(--accent-color)">PRO</span>
+        </h1>
+        
+        <div class="search-box">
+            <input type="text" id="locationSearch" placeholder="Search locations or items (e.g. 'mt1')..." onkeyup="filterLocations()">
+            <div style="margin-top: 20px;">
+                <button class="btn-open-door" onclick="showAllLocations()">Open Door Showroom</button>
+            </div>
+        </div>
+        <div id="statusText" class="status" style="display: none;">Showing available locations</div>
+
+        <div class="locations-grid" id="locationsGrid">
+            
+            <div class="location-card" id="card-welcomehall">
+                <button class="btn-back" onclick="goBack()">← Back</button>
+                <div class="img-container"></div>
+                <h2 style="margin:0">Welcome Hall</h2>
+                <p style="margin:10px 0 0">Step into luxury at our main entrance.</p>
+                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            </div>
+
+            <div class="location-card" id="card-urbanwolk">
+                <button class="btn-back" onclick="goBack()">← Back</button>
+                <div class="img-container"></div>
+                <h2 style="margin:0">Urban Wolk</h2>
+                <p style="margin:10px 0 0">Experience the vibe of modern city life.</p>
+                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            </div>
+
+            <div class="location-card" id="card-electra">
+                <button class="btn-back" onclick="goBack()">← Back</button>
+                <div class="img-container"></div>
+                <h2 style="margin:0">Electra</h2>
+                <p style="margin:10px 0 0">The hub of future electric innovation.</p>
+                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            </div>
+
+            <div class="location-card" id="card-gardan">
+                <button class="btn-back" onclick="goBack()">← Back</button>
+                <div class="img-container"></div>
+                <h2 style="margin:0">Gardan</h2>
+                <p style="margin:10px 0 0">Refresh your senses in our green zone.</p>
+                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            </div>
+
+        </div>
+
+        <div id="adminPanel">
+            <button class="btn-back" onclick="toggleAdmin()">← Back</button>
+            
+            <h3>Admin: Add New Location</h3>
+            <input type="text" id="newLocId" class="admin-input" placeholder="Unique ID (e.g. card-office)"><br>
+            <input type="text" id="newLocTitle" class="admin-input" placeholder="Location Title"><br>
+            <input type="text" id="newLocDesc" class="admin-input" placeholder="Description"><br>
+            <button class="btn-open-door" onclick="addNewLocation()">Create Location</button>
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+            <h3>Admin Panel: Upload</h3>
+            <select id="uploadType" class="admin-input" onchange="toggleUploadType()">
+                <option value="location">Main Location Photo</option>
+                <option value="item">Specific Item</option>
+            </select><br>
+            <select id="targetLocation" class="admin-input">
+                <option value="card-welcomehall">Welcome Hall</option>
+                <option value="card-urbanwolk">Urban Wolk</option>
+                <option value="card-electra">Electra</option>
+                <option value="card-gardan">Gardan</option>
+            </select><br>
+            <input type="text" id="itemName" class="admin-input" placeholder="Item Name" style="display:none;"><br>
+            <input type="file" id="photoFile" class="admin-input" accept="image/*"><br>
+            <button class="btn-open-door" onclick="uploadPhoto()">Save to Location</button>
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            <h3>Delete Specific Item</h3>
+            <input type="text" id="deleteItemSearch" class="admin-input" placeholder="Enter Exact Item Name to Delete"><br>
+            <button class="btn-open-door" style="background-color: #dc3545; border-color: #dc3545;" onclick="deleteSpecificItem()">Delete Item</button>
+        </div>
+    </div>
+
+    <script>
+        // Load saved images and locations on startup
+        window.onload = function() {
+            const savedLocs = JSON.parse(localStorage.getItem('showroomExtraLocs') || '[]');
+            savedLocs.forEach(loc => createLocationElement(loc.id, loc.title, loc.desc));
+            updateAdminDropdown();
+
+            const savedImages = JSON.parse(localStorage.getItem('showroomImages') || '{}');
+            const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
+            
+            for (let id in savedImages) {
+                const card = document.getElementById(id);
+                if (card) {
+                    card.querySelector('.img-container').innerHTML = `<img src="${savedImages[id]}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
+                }
+            }
+
+            for (let locId in savedItems) {
+                const card = document.getElementById(locId);
+                if(card) {
+                   const container = card.querySelector('.items-container');
+                   savedItems[locId].forEach(item => {
+                       container.innerHTML += `<div class="item-box" data-name="${item.name}" style="width: 80px; text-align: center;"><img src="${item.img}" style="width:100%; border-radius:5px;"><small>${item.name}</small></div>`;
+                   });
+                }
+            }
+        };
+
+        function createLocationElement(id, title, desc) {
+            const grid = document.getElementById('locationsGrid');
+            if(document.getElementById(id)) return;
+            const card = document.createElement('div');
+            card.className = 'location-card';
+            card.id = id;
+            card.innerHTML = `
+                <button class="btn-back" onclick="goBack()">← Back</button>
+                <div class="img-container"></div>
+                <h2 style="margin:0">${title}</h2>
+                <p style="margin:10px 0 0">${desc}</p>
+                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            `;
+            grid.appendChild(card);
+        }
+
+        function addNewLocation() {
+            const id = document.getElementById('newLocId').value.trim();
+            const title = document.getElementById('newLocTitle').value.trim();
+            const desc = document.getElementById('newLocDesc').value.trim();
+            if(!id || !title) return alert("ID and Title are required");
+            
+            createLocationElement(id, title, desc);
+            const savedLocs = JSON.parse(localStorage.getItem('showroomExtraLocs') || '[]');
+            savedLocs.push({id, title, desc});
+            localStorage.setItem('showroomExtraLocs', JSON.stringify(savedLocs));
+            updateAdminDropdown();
+            alert("Location created!");
+        }
+
+        function updateAdminDropdown() {
+            const select = document.getElementById('targetLocation');
+            const cards = document.getElementsByClassName('location-card');
+            select.innerHTML = "";
+            for(let card of cards) {
+                let title = card.querySelector('h2').innerText;
+                let option = document.createElement('option');
+                option.value = card.id;
+                option.text = title;
+                select.add(option);
+            }
+        }
+
+        function toggleAdmin() {
+            let panel = document.getElementById('adminPanel');
+            panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function toggleUploadType() {
+            const type = document.getElementById('uploadType').value;
+            document.getElementById('itemName').style.display = (type === 'item') ? 'block' : 'none';
+        }
+
+        function uploadPhoto() {
+            const type = document.getElementById('uploadType').value;
+            const locationId = document.getElementById('targetLocation').value;
+            const itemName = document.getElementById('itemName').value;
+            const fileInput = document.getElementById('photoFile');
+            const file = fileInput.files[0];
+            
+            if(!file) return alert("Please select an image file");
+            if(type === 'item' && !itemName) return alert("Please enter item name");
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const url = e.target.result;
+                
+                if(type === 'location') {
+                    const card = document.getElementById(locationId);
+                    card.querySelector('.img-container').innerHTML = `<img src="${url}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
+                    const savedImages = JSON.parse(localStorage.getItem('showroomImages') || '{}');
+                    savedImages[locationId] = url;
+                    localStorage.setItem('showroomImages', JSON.stringify(savedImages));
+                } else {
+                    const container = document.getElementById(locationId).querySelector('.items-container');
+                    container.innerHTML += `<div class="item-box" data-name="${itemName}" style="width: 80px; text-align: center;"><img src="${url}" style="width:100%; border-radius:5px;"><small>${itemName}</small></div>`;
+                    
+                    const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
+                    if(!savedItems[locationId]) savedItems[locationId] = [];
+                    savedItems[locationId].push({name: itemName, img: url});
+                    localStorage.setItem('showroomItems', JSON.stringify(savedItems));
+                }
+
+                alert("Saved successfully!");
+                fileInput.value = "";
+                document.getElementById('itemName').value = "";
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function deleteSpecificItem() {
+            const nameToDelete = document.getElementById('deleteItemSearch').value.trim().toLowerCase();
+            if(!nameToDelete) return alert("Please enter an item name");
+
+            let savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
+            let found = false;
+
+            for(let locId in savedItems) {
+                let initialLength = savedItems[locId].length;
+                savedItems[locId] = savedItems[locId].filter(item => item.name.toLowerCase() !== nameToDelete);
+                if(savedItems[locId].length < initialLength) found = true;
+            }
+
+            if(found) {
+                localStorage.setItem('showroomItems', JSON.stringify(savedItems));
+                alert("Item(s) deleted. Page will refresh.");
+                location.reload();
+            } else {
+                alert("No item found with that name.");
+            }
+        }
+
+        function showAllLocations() {
+            document.getElementById('locationsGrid').style.display = 'grid';
+            document.getElementById('statusText').style.display = 'block';
+            
+            let cards = document.getElementsByClassName('location-card');
+            for (let i = 0; i < cards.length; i++) {
+                cards[i].style.display = "block";
+                let items = cards[i].getElementsByClassName('item-box');
+                for(let j=0; j<items.length; j++) items[j].style.display = "block";
+            }
+        }
+
+        function filterLocations() {
+            let input = document.getElementById('locationSearch').value.toLowerCase();
+            let grid = document.getElementById('locationsGrid');
+            let status = document.getElementById('statusText');
+            let cards = document.getElementsByClassName('location-card');
+
+            if (input.length > 0) {
+                grid.style.display = 'grid';
+                status.style.display = 'block';
+            } else {
+                grid.style.display = 'none';
+                status.style.display = 'none';
+            }
+
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
+                let items = cards[i].getElementsByClassName('item-box');
+                let foundItem = false;
+
+                for(let j=0; j < items.length; j++) {
+                    let itemName = items[j].getAttribute('data-name').toLowerCase();
+                    if(itemName.includes(input)) {
+                        items[j].style.display = "block";
+                        foundItem = true;
+                    } else {
+                        items[j].style.display = (input === "") ? "block" : "none";
+                    }
+                }
+
+                if (title.includes(input) || foundItem) {
+                    cards[i].style.display = "block";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        function goBack() {
+            document.getElementById('locationSearch').value = "";
+            document.getElementById('locationsGrid').style.display = 'none';
+            document.getElementById('statusText').style.display = 'none';
+        }
+    </script>
+
 </body>
-</html>
+                </html>
