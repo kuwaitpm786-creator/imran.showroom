@@ -252,10 +252,29 @@
             <button class="btn-open-door" onclick="uploadPhoto()">Save to Location</button>
             <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
             <h3>Delete Specific Item</h3>
-            <input type="text" id="deleteItemSearch" class="admin-input" placeholder="Enter Exact Item Name to Delete"><br>
-            <button class="btn-open-door" style="background-color: #dc3545; border-color: #dc3545;" onclick="deleteSpecificItem()">Delete Item</button>
+            <input type="text" id="deleteItemSearch" class="admin-input" placeholder="Search item to delete (e.g. tl10)..." onkeyup="searchItemsToDelete()">
+            <div id="deleteSearchResults" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; justify-content: center;"></div>
         </div>
     </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyB_b97VYqxV4cmNfQPCdXBfRDLG-Wjzlas",
+          authDomain: "showroom-6b354.firebaseapp.com",
+          projectId: "showroom-6b354",
+          storageBucket: "showroom-6b354.firebasestorage.app",
+          messagingSenderId: "261135013864",
+          appId: "1:261135013864:web:2f718ebf2b7a411852365d",
+          measurementId: "G-Q8B3XR50PF"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        console.log("Firebase Connected Successfully");
+    </script>
 
     <script>
         // Load saved images and locations on startup
@@ -279,7 +298,8 @@
                 if(card) {
                    const container = card.querySelector('.items-container');
                    savedItems[locId].forEach(item => {
-                       container.innerHTML += `<div class="item-box" data-name="${item.name}" style="width: 80px; text-align: center;"><img src="${item.img}" style="width:100%; border-radius:5px;"><small>${item.name}</small></div>`;
+                       const locTitle = card.querySelector('h2').innerText;
+                       container.innerHTML += `<div class="item-box" data-name="${item.name}" style="width: 80px; text-align: center;"><img src="${item.img}" style="width:100%; border-radius:5px;"><small>${item.name}</small><br><em style="font-size:9px; color:var(--accent-color)">${locTitle}</em></div>`;
                    });
                 }
             }
@@ -312,7 +332,7 @@
             savedLocs.push({id, title, desc});
             localStorage.setItem('showroomExtraLocs', JSON.stringify(savedLocs));
             updateAdminDropdown();
-            alert("Location created!");
+            alert("Location created successfully!");
         }
 
         function updateAdminDropdown() {
@@ -359,8 +379,10 @@
                     savedImages[locationId] = url;
                     localStorage.setItem('showroomImages', JSON.stringify(savedImages));
                 } else {
-                    const container = document.getElementById(locationId).querySelector('.items-container');
-                    container.innerHTML += `<div class="item-box" data-name="${itemName}" style="width: 80px; text-align: center;"><img src="${url}" style="width:100%; border-radius:5px;"><small>${itemName}</small></div>`;
+                    const card = document.getElementById(locationId);
+                    const container = card.querySelector('.items-container');
+                    const locTitle = card.querySelector('h2').innerText;
+                    container.innerHTML += `<div class="item-box" data-name="${itemName}" style="width: 80px; text-align: center;"><img src="${url}" style="width:100%; border-radius:5px;"><small>${itemName}</small><br><em style="font-size:9px; color:var(--accent-color)">${locTitle}</em></div>`;
                     
                     const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
                     if(!savedItems[locationId]) savedItems[locationId] = [];
@@ -368,32 +390,46 @@
                     localStorage.setItem('showroomItems', JSON.stringify(savedItems));
                 }
 
-                alert("Saved successfully!");
+                alert("Save successfully!");
                 fileInput.value = "";
                 document.getElementById('itemName').value = "";
             };
             reader.readAsDataURL(file);
         }
 
-        function deleteSpecificItem() {
-            const nameToDelete = document.getElementById('deleteItemSearch').value.trim().toLowerCase();
-            if(!nameToDelete) return alert("Please enter an item name");
+        function searchItemsToDelete() {
+            const rawQuery = document.getElementById('deleteItemSearch').value.trim().toLowerCase();
+            const normalizedQuery = rawQuery.replace(/[-\s]/g, '');
+            const resultsDiv = document.getElementById('deleteSearchResults');
+            resultsDiv.innerHTML = "";
+            if(!rawQuery) return;
+
+            const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
+            for(let locId in savedItems) {
+                savedItems[locId].forEach((item, index) => {
+                    const normalizedItemName = item.name.toLowerCase().replace(/[-\s]/g, '');
+                    if(normalizedItemName.includes(normalizedQuery)) {
+                        const card = document.getElementById(locId);
+                        const locName = card ? card.querySelector('h2').innerText : "Unknown";
+                        const itemDiv = document.createElement('div');
+                        itemDiv.style = "width: 100px; text-align: center; cursor: pointer; border: 1px solid #ddd; padding: 5px; border-radius: 5px; background:#fff;";
+                        itemDiv.innerHTML = `<img src="${item.img}" style="width:100%; border-radius:3px;"><br><small><b>${item.name}</b></small><br><small style="font-size:8px;">Loc: ${locName}</small><br><b style="color:red; font-size:10px;">Click to Delete</b>`;
+                        itemDiv.onclick = () => deleteSpecificItem(locId, index, item.name);
+                        resultsDiv.appendChild(itemDiv);
+                    }
+                });
+            }
+        }
+
+        function deleteSpecificItem(locId, index, name) {
+            if(!confirm(`Are you sure you want to delete this specific photo of "${name}"?`)) return;
 
             let savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-            let found = false;
-
-            for(let locId in savedItems) {
-                let initialLength = savedItems[locId].length;
-                savedItems[locId] = savedItems[locId].filter(item => item.name.toLowerCase() !== nameToDelete);
-                if(savedItems[locId].length < initialLength) found = true;
-            }
-
-            if(found) {
+            if (savedItems[locId]) {
+                savedItems[locId].splice(index, 1);
                 localStorage.setItem('showroomItems', JSON.stringify(savedItems));
-                alert("Item(s) deleted. Page will refresh.");
+                alert("Photo deleted successfully.");
                 location.reload();
-            } else {
-                alert("No item found with that name.");
             }
         }
 
@@ -410,12 +446,13 @@
         }
 
         function filterLocations() {
-            let input = document.getElementById('locationSearch').value.toLowerCase();
+            const rawInput = document.getElementById('locationSearch').value.toLowerCase();
+            const normalizedInput = rawInput.replace(/[-\s]/g, '');
             let grid = document.getElementById('locationsGrid');
             let status = document.getElementById('statusText');
             let cards = document.getElementsByClassName('location-card');
 
-            if (input.length > 0) {
+            if (rawInput.length > 0) {
                 grid.style.display = 'grid';
                 status.style.display = 'block';
             } else {
@@ -430,15 +467,16 @@
 
                 for(let j=0; j < items.length; j++) {
                     let itemName = items[j].getAttribute('data-name').toLowerCase();
-                    if(itemName.includes(input)) {
+                    let normalizedItemName = itemName.replace(/[-\s]/g, '');
+                    if(normalizedItemName.includes(normalizedInput)) {
                         items[j].style.display = "block";
                         foundItem = true;
                     } else {
-                        items[j].style.display = (input === "") ? "block" : "none";
+                        items[j].style.display = (rawInput === "") ? "block" : "none";
                     }
                 }
 
-                if (title.includes(input) || foundItem) {
+                if (title.includes(rawInput) || foundItem) {
                     cards[i].style.display = "block";
                 } else {
                     cards[i].style.display = "none";
@@ -454,4 +492,4 @@
     </script>
 
 </body>
-                </html>
+</html>
