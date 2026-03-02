@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Showroom Pro | Premium Locator</title>
+    <title>Showroom | Premium Locator</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -19,23 +19,29 @@
             background-color: var(--bg-color);
             margin: 0;
             color: var(--text-main);
+            background-image: radial-gradient(#d1d1d1 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
         }
 
         /* Navbar Styling */
         nav {
             background: var(--primary-color);
-            padding: 1rem 5%;
+            padding: 1.2rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .logo {
             color: white;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .admin-link {
@@ -49,7 +55,7 @@
 
         /* Main Hero Section */
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 40px auto;
             padding: 0 20px;
             text-align: center;
@@ -66,24 +72,31 @@
         /* Modern Search Bar */
         .search-box {
             position: relative;
-            max-width: 500px;
-            margin: 0 auto 40px;
+            max-width: 550px;
+            margin: 0 auto 50px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 15px 25px;
-            border-radius: 30px;
-            border: 1px solid #ddd;
-            font-size: 1rem;
+            padding: 18px 30px;
+            border-radius: 35px;
+            border: 1px solid #eee;
+            font-size: 1.1rem;
             outline: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: 0.3s;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+            transition: 0.4s;
+            box-sizing: border-box;
         }
 
         input[type="text"]:focus {
             border-color: var(--accent-color);
-            box-shadow: 0 4px 20px rgba(197, 160, 89, 0.2);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+            transform: scale(1.02);
         }
 
         /* Loading & Results */
@@ -91,60 +104,74 @@
             font-style: italic;
             color: #888;
             margin-bottom: 20px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
         }
 
         /* Grid for multiple cards */
         .locations-grid {
             display: none; /* Initially hidden */
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
             margin-top: 20px;
         }
 
         .location-card {
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border-left: 5px solid var(--accent-color);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.07);
+            border: 1px solid rgba(0,0,0,0.03);
+            border-top: 6px solid var(--accent-color);
             text-align: left;
-            transition: transform 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .location-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.12);
         }
 
         .btn-back {
-            background: #eee;
+            background: #f0f0f0;
             border: none;
-            padding: 8px 20px;
-            border-radius: 5px;
+            padding: 10px 22px;
+            border-radius: 30px;
             cursor: pointer;
             margin-bottom: 20px;
-            transition: 0.2s;
+            transition: 0.3s;
+            font-weight: 600;
+            color: #555;
         }
 
-        .btn-back:hover { background: #ddd; }
+        .btn-back:hover { 
+            background: var(--primary-color);
+            color: white;
+        }
 
         /* New Button Style for Open Door */
         .btn-open-door {
             background-color: var(--primary-color);
             color: white;
-            padding: 12px 25px;
+            padding: 14px 35px;
             border: none;
-            border-radius: 8px;
+            border-radius: 30px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            margin-top: 10px;
-            transition: 0.3s;
-            border: 1px solid var(--accent-color);
+            margin-top: 15px;
+            transition: 0.4s;
+            border: 2px solid var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .btn-open-door:hover {
             background-color: var(--accent-color);
             color: var(--primary-color);
+            box-shadow: 0 8px 25px rgba(197, 160, 89, 0.4);
         }
 
         /* Admin Panel Styling */
@@ -168,19 +195,32 @@
             border-radius: 5px;
         }
 
+        .item-box {
+            background: #fafafa;
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            transition: 0.3s;
+        }
+        
+        .item-box:hover {
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">SHOWROOM<span style="color:var(--accent-color)">PRO</span></div>
-        <a href="#" class="admin-link" onclick="toggleAdmin()">Admin Login</a>
+        <div class="logo">SHOWROOM</div>
     </nav>
 
     <div class="container" id="mainHome" style="margin-top: 80px;">
-        <h1 style="font-size: 4rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 20px;">
-            SHOWROOM<span style="color:var(--accent-color)">PRO</span>
+        <h1 style="font-size: 5rem; font-weight: 900; letter-spacing: -3px; margin-bottom: 10px; text-transform: uppercase;">
+            SHOW<span style="color:var(--accent-color)">ROOM</span>
         </h1>
+        <p style="font-size: 1.2rem; letter-spacing: 2px; font-weight: 300; margin-top: -10px;">EXCLUSIVITY IN EVERY CORNER</p>
         
         <div class="search-box">
             <input type="text" id="locationSearch" placeholder="Search locations or items (e.g. 'mt1')..." onkeyup="filterLocations()">
@@ -195,7 +235,7 @@
             <div class="location-card" id="card-welcomehall">
                 <button class="btn-back" onclick="goBack()">← Back</button>
                 <div class="img-container"></div>
-                <h2 style="margin:0">Welcome Hall</h2>
+                <h2 style="margin:0; font-weight: 700; color: var(--primary-color);">Welcome Hall</h2>
                 <p style="margin:10px 0 0">Step into luxury at our main entrance.</p>
                 <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
             </div>
@@ -203,7 +243,7 @@
             <div class="location-card" id="card-urbanwolk">
                 <button class="btn-back" onclick="goBack()">← Back</button>
                 <div class="img-container"></div>
-                <h2 style="margin:0">Urban Wolk</h2>
+                <h2 style="margin:0; font-weight: 700; color: var(--primary-color);">Urban Wolk</h2>
                 <p style="margin:10px 0 0">Experience the vibe of modern city life.</p>
                 <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
             </div>
@@ -211,7 +251,7 @@
             <div class="location-card" id="card-electra">
                 <button class="btn-back" onclick="goBack()">← Back</button>
                 <div class="img-container"></div>
-                <h2 style="margin:0">Electra</h2>
+                <h2 style="margin:0; font-weight: 700; color: var(--primary-color);">Electra</h2>
                 <p style="margin:10px 0 0">The hub of future electric innovation.</p>
                 <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
             </div>
@@ -219,42 +259,13 @@
             <div class="location-card" id="card-gardan">
                 <button class="btn-back" onclick="goBack()">← Back</button>
                 <div class="img-container"></div>
-                <h2 style="margin:0">Gardan</h2>
+                <h2 style="margin:0; font-weight: 700; color: var(--primary-color);">Gardan</h2>
                 <p style="margin:10px 0 0">Refresh your senses in our green zone.</p>
                 <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
             </div>
 
         </div>
 
-        <div id="adminPanel">
-            <button class="btn-back" onclick="toggleAdmin()">← Back</button>
-            
-            <h3>Admin: Add New Location</h3>
-            <input type="text" id="newLocId" class="admin-input" placeholder="Unique ID (e.g. card-office)"><br>
-            <input type="text" id="newLocTitle" class="admin-input" placeholder="Location Title"><br>
-            <input type="text" id="newLocDesc" class="admin-input" placeholder="Description"><br>
-            <button class="btn-open-door" onclick="addNewLocation()">Create Location</button>
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-
-            <h3>Admin Panel: Upload</h3>
-            <select id="uploadType" class="admin-input" onchange="toggleUploadType()">
-                <option value="location">Main Location Photo</option>
-                <option value="item">Specific Item</option>
-            </select><br>
-            <select id="targetLocation" class="admin-input">
-                <option value="card-welcomehall">Welcome Hall</option>
-                <option value="card-urbanwolk">Urban Wolk</option>
-                <option value="card-electra">Electra</option>
-                <option value="card-gardan">Gardan</option>
-            </select><br>
-            <input type="text" id="itemName" class="admin-input" placeholder="Item Name" style="display:none;"><br>
-            <input type="file" id="photoFile" class="admin-input" accept="image/*"><br>
-            <button class="btn-open-door" onclick="uploadPhoto()">Save to Location</button>
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-            <h3>Delete Specific Item</h3>
-            <input type="text" id="deleteItemSearch" class="admin-input" placeholder="Search item to delete (e.g. tl10)..." onkeyup="searchItemsToDelete()">
-            <div id="deleteSearchResults" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; justify-content: center;"></div>
-        </div>
     </div>
 
     <script type="module">
@@ -281,7 +292,6 @@
         window.onload = function() {
             const savedLocs = JSON.parse(localStorage.getItem('showroomExtraLocs') || '[]');
             savedLocs.forEach(loc => createLocationElement(loc.id, loc.title, loc.desc));
-            updateAdminDropdown();
 
             const savedImages = JSON.parse(localStorage.getItem('showroomImages') || '{}');
             const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
@@ -314,123 +324,11 @@
             card.innerHTML = `
                 <button class="btn-back" onclick="goBack()">← Back</button>
                 <div class="img-container"></div>
-                <h2 style="margin:0">${title}</h2>
+                <h2 style="margin:0; font-weight: 700; color: var(--primary-color);">${title}</h2>
                 <p style="margin:10px 0 0">${desc}</p>
                 <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
             `;
             grid.appendChild(card);
-        }
-
-        function addNewLocation() {
-            const id = document.getElementById('newLocId').value.trim();
-            const title = document.getElementById('newLocTitle').value.trim();
-            const desc = document.getElementById('newLocDesc').value.trim();
-            if(!id || !title) return alert("ID and Title are required");
-            
-            createLocationElement(id, title, desc);
-            const savedLocs = JSON.parse(localStorage.getItem('showroomExtraLocs') || '[]');
-            savedLocs.push({id, title, desc});
-            localStorage.setItem('showroomExtraLocs', JSON.stringify(savedLocs));
-            updateAdminDropdown();
-            alert("Location created successfully!");
-        }
-
-        function updateAdminDropdown() {
-            const select = document.getElementById('targetLocation');
-            const cards = document.getElementsByClassName('location-card');
-            select.innerHTML = "";
-            for(let card of cards) {
-                let title = card.querySelector('h2').innerText;
-                let option = document.createElement('option');
-                option.value = card.id;
-                option.text = title;
-                select.add(option);
-            }
-        }
-
-        function toggleAdmin() {
-            let panel = document.getElementById('adminPanel');
-            panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
-        }
-
-        function toggleUploadType() {
-            const type = document.getElementById('uploadType').value;
-            document.getElementById('itemName').style.display = (type === 'item') ? 'block' : 'none';
-        }
-
-        function uploadPhoto() {
-            const type = document.getElementById('uploadType').value;
-            const locationId = document.getElementById('targetLocation').value;
-            const itemName = document.getElementById('itemName').value;
-            const fileInput = document.getElementById('photoFile');
-            const file = fileInput.files[0];
-            
-            if(!file) return alert("Please select an image file");
-            if(type === 'item' && !itemName) return alert("Please enter item name");
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const url = e.target.result;
-                
-                if(type === 'location') {
-                    const card = document.getElementById(locationId);
-                    card.querySelector('.img-container').innerHTML = `<img src="${url}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
-                    const savedImages = JSON.parse(localStorage.getItem('showroomImages') || '{}');
-                    savedImages[locationId] = url;
-                    localStorage.setItem('showroomImages', JSON.stringify(savedImages));
-                } else {
-                    const card = document.getElementById(locationId);
-                    const container = card.querySelector('.items-container');
-                    const locTitle = card.querySelector('h2').innerText;
-                    container.innerHTML += `<div class="item-box" data-name="${itemName}" style="width: 80px; text-align: center;"><img src="${url}" style="width:100%; border-radius:5px;"><small>${itemName}</small><br><em style="font-size:9px; color:var(--accent-color)">${locTitle}</em></div>`;
-                    
-                    const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-                    if(!savedItems[locationId]) savedItems[locationId] = [];
-                    savedItems[locationId].push({name: itemName, img: url});
-                    localStorage.setItem('showroomItems', JSON.stringify(savedItems));
-                }
-
-                alert("Save successfully!");
-                fileInput.value = "";
-                document.getElementById('itemName').value = "";
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function searchItemsToDelete() {
-            const rawQuery = document.getElementById('deleteItemSearch').value.trim().toLowerCase();
-            const normalizedQuery = rawQuery.replace(/[-\s]/g, '');
-            const resultsDiv = document.getElementById('deleteSearchResults');
-            resultsDiv.innerHTML = "";
-            if(!rawQuery) return;
-
-            const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-            for(let locId in savedItems) {
-                savedItems[locId].forEach((item, index) => {
-                    const normalizedItemName = item.name.toLowerCase().replace(/[-\s]/g, '');
-                    if(normalizedItemName.includes(normalizedQuery)) {
-                        const card = document.getElementById(locId);
-                        const locName = card ? card.querySelector('h2').innerText : "Unknown";
-                        const itemDiv = document.createElement('div');
-                        itemDiv.style = "width: 100px; text-align: center; cursor: pointer; border: 1px solid #ddd; padding: 5px; border-radius: 5px; background:#fff;";
-                        itemDiv.innerHTML = `<img src="${item.img}" style="width:100%; border-radius:3px;"><br><small><b>${item.name}</b></small><br><small style="font-size:8px;">Loc: ${locName}</small><br><b style="color:red; font-size:10px;">Click to Delete</b>`;
-                        itemDiv.onclick = () => deleteSpecificItem(locId, index, item.name);
-                        resultsDiv.appendChild(itemDiv);
-                    }
-                });
-            }
-        }
-
-        function deleteSpecificItem(locId, index, name) {
-            if(!confirm(`Are you sure you want to delete this specific photo of "${name}"?`)) return;
-
-            let savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-            if (savedItems[locId]) {
-                savedItems[locId].splice(index, 1);
-                localStorage.setItem('showroomItems', JSON.stringify(savedItems));
-                alert("Photo deleted successfully.");
-                location.reload();
-            }
         }
 
         function showAllLocations() {
