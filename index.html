@@ -1,278 +1,346 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Showroom | Premium Locator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Showroom - Luxury Experience</title>
     <style>
-        :root {
-            --primary-color: #1a1a1a;
-            --accent-color: #c5a059; /* Gold accent for premium feel */
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-main: #333;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
+        * {
+            box-sizing: border-box;
             margin: 0;
-            color: var(--text-main);
-            background-image: radial-gradient(#d1d1d1 0.5px, transparent 0.5px);
-            background-size: 20px 20px;
+            padding: 0;
         }
 
-        /* Navbar Styling */
-        nav {
-            background: var(--primary-color);
-            padding: 1.2rem 5%;
+        /* --- Premium Animated Background --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            height: 100vh;
+            width: 100%;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            position: sticky;
+            overflow: hidden;
+            /* Luxury Mesh Gradient */
+            background: linear-gradient(45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Glassy Header --- */
+        header {
+            width: 100%;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1); /* Transparent White */
+            backdrop-filter: blur(15px); /* Frosty glass effect */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .logo {
-            color: white;
-            font-size: 1.6rem;
+        .header-title {
+            font-size: 28px;
             font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            letter-spacing: 5px;
+            /* Header Luxury Design Color Update - Metallic Luxury Gold Gradient */
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            text-shadow: none; /* Shadow replaced by filter for cleaner metallic look */
         }
 
-        .admin-link {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-
-        .admin-link:hover { color: white; }
-
-        /* Main Hero Section */
-        .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: var(--primary-color);
-        }
-
-        p { color: #666; margin-bottom: 30px; }
-
-        /* Modern Search Bar */
-        .search-box {
-            position: relative;
-            max-width: 550px;
-            margin: 0 auto 50px;
+        /* --- Main Content --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            z-index: 10;
         }
 
-        input[type="text"] {
+        /* Logo Design with Glow */
+        .logo {
+            font-size: clamp(65px, 18vw, 130px);
+            font-weight: 900;
+            margin-bottom: 40px;
+            letter-spacing: -4px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+            user-select: none;
+            /* Yahan background-clip ko text ke liye rakha gaya hai taaki spans ke colors dikhen */
+        }
+
+        /* Google Style Colors for Logo spans */
+        .logo .s { color: #4285F4; } /* Blue */
+        .logo .h { color: #EA4335; } /* Red */
+        .logo .o1 { color: #FBBC05; } /* Yellow */
+        .logo .o2 { color: #4285F4; } /* Blue */
+        .logo .w { color: #34A853; } /* Green */
+        .logo .r { color: #EA4335; } /* Red */
+        .logo .o3 { color: #FBBC05; } /* Yellow */
+        .logo .m { color: #34A853; } /* Green */
+
+        /* Search Box - Glassmorphism style */
+        .search-wrapper {
+            width: 100%;
+            max-width: 650px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px;
+            border-radius: 60px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            display: flex;
+            transition: all 0.4s ease;
+        }
+
+        .search-wrapper:focus-within {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.03);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .search-bar {
             width: 100%;
             padding: 18px 30px;
-            border-radius: 35px;
-            border: 1px solid #eee;
-            font-size: 1.1rem;
+            font-size: 20px;
+            border: none;
             outline: none;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
-            transition: 0.4s;
-            box-sizing: border-box;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
-            transform: scale(1.02);
-        }
-
-        /* Loading & Results */
-        .status {
-            font-style: italic;
-            color: #888;
-            margin-bottom: 20px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-        }
-
-        /* Grid for multiple cards */
-        .locations-grid {
-            display: none; /* Initially hidden */
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .location-card {
-            background: var(--card-bg);
-            padding: 35px;
-            border-radius: 20px;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.07);
-            border: 1px solid rgba(0,0,0,0.03);
-            border-top: 6px solid var(--accent-color);
-            text-align: left;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .location-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 60px rgba(0,0,0,0.12);
-        }
-
-        .btn-back {
-            background: #f0f0f0;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 30px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: 0.3s;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .btn-back:hover { 
-            background: var(--primary-color);
+            background: transparent;
             color: white;
         }
 
-        /* New Button Style for Open Door */
-        .btn-open-door {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 14px 35px;
-            border: none;
-            border-radius: 30px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: 0.4s;
-            border: 2px solid var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
 
-        .btn-open-door:hover {
-            background-color: var(--accent-color);
-            color: var(--primary-color);
-            box-shadow: 0 8px 25px rgba(197, 160, 89, 0.4);
-        }
-
-        /* Admin Panel Styling */
-        #adminPanel {
-            display: none;
-            background: #fff;
-            padding: 20px;
+        /* Premium Buttons */
+        .button-container {
             margin-top: 50px;
-            border: 2px dashed var(--accent-color);
-            border-radius: 15px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        .admin-input {
+        .btn {
+            padding: 16px 40px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-search {
+            background: white;
+            color: #333;
+        }
+
+        .btn-open {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-open:hover {
+            background: white;
+            color: black;
+        }
+
+        /* Floating particles effect (Background ko zinda karne ke liye) */
+        .bg-circle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+            filter: blur(50px);
+        }
+
+        footer {
+            position: absolute;
+            bottom: 25px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* --- New Addition: Open Door Page Section --- */
+        #door-page {
+            position: fixed;
+            top: 0;
+            left: 100%; /* Shuru mein screen ke bahar hoga */
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+            z-index: 2000;
+            transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Allowed scrolling for gallery */
+            overflow-y: auto; 
+            padding-top: 100px;
+        }
+
+        #door-page.active {
+            left: 0; /* Click karne par screen par aa jayega */
+        }
+
+        .welcome-content {
+            text-align: center;
+            color: white;
+            z-index: 10;
             width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            max-width: 1000px;
         }
 
-        .item-box {
-            background: #fafafa;
+        /* --- Updated Addition: Location Grouping Styles --- */
+        .location-section {
+            margin-top: 50px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .location-title {
+            font-size: 24px;
+            font-weight: bold;
+            border-left: 5px solid gold;
+            padding-left: 15px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .showroom-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .item-info {
             padding: 10px;
-            border-radius: 12px;
-            border: 1px solid #eee;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .close-btn {
+            margin-top: 30px;
+            padding: 12px 30px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
             transition: 0.3s;
-        }
-        
-        .item-box:hover {
-            border-color: var(--accent-color);
-            transform: scale(1.05);
+            margin-bottom: 50px;
         }
 
+        .close-btn:hover {
+            background: white;
+            color: #b21f1f;
+        }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">SHOWROOM</div>
-    </nav>
+    <div class="bg-circle" style="width: 400px; height: 400px; top: -100px; left: -100px;"></div>
+    <div class="bg-circle" style="width: 300px; height: 300px; bottom: -50px; right: -50px;"></div>
 
-    <div class="container" id="mainHome" style="margin-top: 80px;">
-        <h1 style="font-size: 5rem; font-weight: 900; letter-spacing: -3px; margin-bottom: 10px; text-transform: uppercase;">
-            SHOW<span style="color:var(--accent-color)">ROOM</span>
-        </h1>
-        <p style="font-size: 1.2rem; letter-spacing: 2px; font-weight: 300; margin-top: -10px;">EXCLUSIVITY IN EVERY CORNER</p>
-        
-        <div class="search-box">
-            <input type="text" id="locationSearch" placeholder="Search locations or items (e.g. 'mt1')..." onkeyup="filterLocations()">
-            <div style="margin-top: 20px;">
-                <button class="btn-open-door" onclick="showAllLocations()">Open Door Showroom</button>
-            </div>
-        </div>
-        <div id="statusText" class="status" style="display: none;">Showing available locations</div>
+    <header id="main-header">
+        <div class="header-title" id="header-text">SHOWROOM</div>
+    </header>
 
-        <div class="locations-grid" id="locationsGrid">
-            
-            <div class="location-card" id="card-welcomehall">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2 style="margin:0; font-weight: 700; color: var(--primary-color);">Welcome Hall</h2>
-                <p style="margin:10px 0 0">Step into luxury at our main entrance.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
-            <div class="location-card" id="card-urbanwolk">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2 style="margin:0; font-weight: 700; color: var(--primary-color);">Urban Wolk</h2>
-                <p style="margin:10px 0 0">Experience the vibe of modern city life.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
-            <div class="location-card" id="card-electra">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2 style="margin:0; font-weight: 700; color: var(--primary-color);">Electra</h2>
-                <p style="margin:10px 0 0">The hub of future electric innovation.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
-            <div class="location-card" id="card-gardan">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2 style="margin:0; font-weight: 700; color: var(--primary-color);">Gardan</h2>
-                <p style="margin:10px 0 0">Refresh your senses in our green zone.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
+    <div class="main-content">
+        <div class="logo">
+            <span class="s">S</span><span class="h">h</span><span class="o1">o</span><span class="o2">w</span><span class="w">r</span><span class="r">o</span><span class="o3">o</span><span class="m">m</span>
         </div>
 
+        <div class="search-wrapper">
+            <input type="text" class="search-bar" placeholder="Experience the Luxury...">
+        </div>
+
+        <div class="button-container">
+            <button class="btn btn-search">Search Now</button>
+            <button class="btn btn-open" onclick="openDoor()">Open Door Showroom</button>
+        </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    <div id="door-page">
+        <header>
+            <div class="header-title">Welcome Showroom</div>
+        </header>
+        <div class="welcome-content">
+            <h1 style="font-size: 3rem; margin-bottom: 10px;">Swagat Hai!</h1>
+            <p>Aapne Luxury Showroom ke darwaze khol diye hain.</p>
+            
+            <div id="showroomGallery">
+                </div>
 
+            <button class="close-btn" onclick="closeDoor()">Close Door</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Showroom Elite | Premium Digital Experience
+    </footer>
+
+    <script type="module">
+        // Import Firebase Functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
+        // Your Firebase configuration
         const firebaseConfig = {
           apiKey: "AIzaSyB_b97VYqxV4cmNfQPCdXBfRDLG-Wjzlas",
           authDomain: "showroom-6b354.firebaseapp.com",
@@ -283,133 +351,65 @@
           measurementId: "G-Q8B3XR50PF"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getDatabase(app);
-        console.log("Firebase Connected Successfully");
+        const db = getFirestore(app);
 
-        // --- REAL-TIME DATA FETCHING FROM FIREBASE ---
+        // --- Real-time Photo Fetch & Grouping Logic ---
+        const galleryContainer = document.getElementById('showroomGallery');
+        const q = query(collection(db, "photos"), orderBy("createdAt", "desc"));
 
-        // 1. Fetch Dynamic Locations
-        onValue(ref(db, 'locations'), (snapshot) => {
-            const data = snapshot.val();
-            if(data) {
-                Object.values(data).forEach(loc => {
-                    createLocationElement(loc.id, loc.title, loc.desc);
+        onSnapshot(q, (snapshot) => {
+            galleryContainer.innerHTML = ""; // Clear
+            const locations = {};
+
+            // Grouping items by location
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const locName = data.location || "General";
+                if (!locations[locName]) {
+                    locations[locName] = [];
+                }
+                locations[locName].push(data);
+            });
+
+            // Creating HTML for each location
+            for (const loc in locations) {
+                const section = document.createElement('div');
+                section.className = "location-section";
+                
+                section.innerHTML = `<h2 class="location-title">${loc}</h2>`;
+                
+                const grid = document.createElement('div');
+                grid.className = "showroom-gallery";
+
+                locations[loc].forEach(itemData => {
+                    const item = document.createElement('div');
+                    item.className = "gallery-item";
+                    item.innerHTML = `
+                        <img src="${itemData.url}" alt="${itemData.item}">
+                        <div class="item-info">${itemData.item || 'Premium Item'}</div>
+                    `;
+                    grid.appendChild(item);
                 });
-            }
-        });
 
-        // 2. Fetch Main Images (Covers)
-        onValue(ref(db, 'images'), (snapshot) => {
-            const data = snapshot.val();
-            if(data) {
-                for(let id in data) {
-                    const card = document.getElementById(id);
-                    if (card) {
-                        card.querySelector('.img-container').innerHTML = `<img src="${data[id].url}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
-                    }
-                }
+                section.appendChild(grid);
+                galleryContainer.appendChild(section);
             }
         });
-
-        // 3. Fetch Items
-        onValue(ref(db, 'items'), (snapshot) => {
-            const data = snapshot.val();
-            if(data) {
-                for(let locId in data) {
-                    const card = document.getElementById(locId);
-                    if(card) {
-                       const container = card.querySelector('.items-container');
-                       container.innerHTML = ""; // Clear existing
-                       Object.values(data[locId]).forEach(item => {
-                           const locTitle = card.querySelector('h2').innerText;
-                           container.innerHTML += `
-                            <div class="item-box" data-name="${item.name}" style="width: 80px; text-align: center;">
-                                <img src="${item.url}" style="width:100%; border-radius:5px;">
-                                <small>${item.name}</small><br>
-                                <em style="font-size:9px; color:var(--accent-color)">${locTitle}</em>
-                            </div>`;
-                       });
-                    }
-                }
-            }
-        });
+        
+        console.log("Firebase connected. Location grouping active.");
     </script>
 
     <script>
-        // Keeping helper functions for UI
-        function createLocationElement(id, title, desc) {
-            const grid = document.getElementById('locationsGrid');
-            if(document.getElementById(id)) return;
-            const card = document.createElement('div');
-            card.className = 'location-card';
-            card.id = id;
-            card.innerHTML = `
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2 style="margin:0; font-weight: 700; color: var(--primary-color);">${title}</h2>
-                <p style="margin:10px 0 0">${desc}</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            `;
-            grid.appendChild(card);
+        // Open Door Function
+        function openDoor() {
+            document.getElementById('door-page').classList.add('active');
         }
 
-        function showAllLocations() {
-            document.getElementById('locationsGrid').style.display = 'grid';
-            document.getElementById('statusText').style.display = 'block';
-            
-            let cards = document.getElementsByClassName('location-card');
-            for (let i = 0; i < cards.length; i++) {
-                cards[i].style.display = "block";
-                let items = cards[i].getElementsByClassName('item-box');
-                for(let j=0; j<items.length; j++) items[j].style.display = "block";
-            }
-        }
-
-        function filterLocations() {
-            const rawInput = document.getElementById('locationSearch').value.toLowerCase();
-            const normalizedInput = rawInput.replace(/[-\s]/g, '');
-            let grid = document.getElementById('locationsGrid');
-            let status = document.getElementById('statusText');
-            let cards = document.getElementsByClassName('location-card');
-
-            if (rawInput.length > 0) {
-                grid.style.display = 'grid';
-                status.style.display = 'block';
-            } else {
-                grid.style.display = 'none';
-                status.style.display = 'none';
-            }
-
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
-                let items = cards[i].getElementsByClassName('item-box');
-                let foundItem = false;
-
-                for(let j=0; j < items.length; j++) {
-                    let itemName = items[j].getAttribute('data-name').toLowerCase();
-                    let normalizedItemName = itemName.replace(/[-\s]/g, '');
-                    if(normalizedItemName.includes(normalizedInput)) {
-                        items[j].style.display = "block";
-                        foundItem = true;
-                    } else {
-                        items[j].style.display = (rawInput === "") ? "block" : "none";
-                    }
-                }
-
-                if (title.includes(rawInput) || foundItem) {
-                    cards[i].style.display = "block";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
-        }
-
-        function goBack() {
-            document.getElementById('locationSearch').value = "";
-            document.getElementById('locationsGrid').style.display = 'none';
-            document.getElementById('statusText').style.display = 'none';
+        // Close Door Function
+        function closeDoor() {
+            document.getElementById('door-page').classList.remove('active');
         }
     </script>
 
