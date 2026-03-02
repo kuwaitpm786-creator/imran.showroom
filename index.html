@@ -271,6 +271,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyB_b97VYqxV4cmNfQPCdXBfRDLG-Wjzlas",
@@ -284,37 +285,60 @@
 
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
+        const db = getDatabase(app);
         console.log("Firebase Connected Successfully");
+
+        // --- REAL-TIME DATA FETCHING FROM FIREBASE ---
+
+        // 1. Fetch Dynamic Locations
+        onValue(ref(db, 'locations'), (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                Object.values(data).forEach(loc => {
+                    createLocationElement(loc.id, loc.title, loc.desc);
+                });
+            }
+        });
+
+        // 2. Fetch Main Images (Covers)
+        onValue(ref(db, 'images'), (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                for(let id in data) {
+                    const card = document.getElementById(id);
+                    if (card) {
+                        card.querySelector('.img-container').innerHTML = `<img src="${data[id].url}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
+                    }
+                }
+            }
+        });
+
+        // 3. Fetch Items
+        onValue(ref(db, 'items'), (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                for(let locId in data) {
+                    const card = document.getElementById(locId);
+                    if(card) {
+                       const container = card.querySelector('.items-container');
+                       container.innerHTML = ""; // Clear existing
+                       Object.values(data[locId]).forEach(item => {
+                           const locTitle = card.querySelector('h2').innerText;
+                           container.innerHTML += `
+                            <div class="item-box" data-name="${item.name}" style="width: 80px; text-align: center;">
+                                <img src="${item.url}" style="width:100%; border-radius:5px;">
+                                <small>${item.name}</small><br>
+                                <em style="font-size:9px; color:var(--accent-color)">${locTitle}</em>
+                            </div>`;
+                       });
+                    }
+                }
+            }
+        });
     </script>
 
     <script>
-        // Load saved images and locations on startup
-        window.onload = function() {
-            const savedLocs = JSON.parse(localStorage.getItem('showroomExtraLocs') || '[]');
-            savedLocs.forEach(loc => createLocationElement(loc.id, loc.title, loc.desc));
-
-            const savedImages = JSON.parse(localStorage.getItem('showroomImages') || '{}');
-            const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-            
-            for (let id in savedImages) {
-                const card = document.getElementById(id);
-                if (card) {
-                    card.querySelector('.img-container').innerHTML = `<img src="${savedImages[id]}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
-                }
-            }
-
-            for (let locId in savedItems) {
-                const card = document.getElementById(locId);
-                if(card) {
-                   const container = card.querySelector('.items-container');
-                   savedItems[locId].forEach(item => {
-                       const locTitle = card.querySelector('h2').innerText;
-                       container.innerHTML += `<div class="item-box" data-name="${item.name}" style="width: 80px; text-align: center;"><img src="${item.img}" style="width:100%; border-radius:5px;"><small>${item.name}</small><br><em style="font-size:9px; color:var(--accent-color)">${locTitle}</em></div>`;
-                   });
-                }
-            }
-        };
-
+        // Keeping helper functions for UI
         function createLocationElement(id, title, desc) {
             const grid = document.getElementById('locationsGrid');
             if(document.getElementById(id)) return;
