@@ -1,38 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Showroom | Premium Locator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
-    
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
-
+    <title>Showroom - Luxury Experience</title>
     <style>
-        :root {
-            --primary-color: #1a1a1a;
-            --accent-color: #c5a059; /* Gold accent */
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --gold-gradient: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        /* --- Premium Animated Mesh Gradient Background --- */
+        /* --- Premium Animated Background --- */
         body {
-            font-family: 'Poppins', 'Inter', sans-serif;
-            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
             background: linear-gradient(45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            color: white;
-            overflow-x: hidden;
         }
 
         @keyframes gradientBG {
@@ -41,677 +32,376 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Floating Blurred Background Circles */
-        body::before, body::after {
-            content: '';
-            position: fixed;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            filter: blur(60px);
-            z-index: -1;
-        }
-        body::before { top: -100px; left: -100px; }
-        body::after { bottom: -100px; right: -100px; }
-
-        /* --- Fixed Frosty Glass Header --- */
-        nav {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 1rem 5%;
+        header {
+            width: 100%;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(15px); 
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
             position: fixed;
             top: 0;
-            width: 100%;
             z-index: 1000;
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        /* Metallic Gold Title */
+        .share-btn {
+            position: absolute;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .share-btn:hover { background: white; color: #333; }
+
         .header-title {
-            font-size: 1.5rem;
+            font-size: 28px;
             font-weight: 800;
-            letter-spacing: 3px;
-            background: var(--gold-gradient);
+            letter-spacing: 5px;
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
-        .admin-link {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            padding: 8px 15px;
-            border-radius: 20px;
-            background: rgba(0,0,0,0.2);
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 20px;
+            z-index: 10;
         }
 
-        .admin-link:hover { background: white; color: black; }
-
-        /* --- Main Content Layout --- */
-        .container {
-            max-width: 1100px;
-            margin: 120px auto 40px;
-            padding: 0 20px;
-            text-align: center;
-        }
-
-        /* Google-Style Multi-Color Logo */
-        .logo-main {
-            font-size: clamp(3rem, 10vw, 5rem);
+        .logo {
+            font-size: clamp(65px, 18vw, 130px);
             font-weight: 900;
-            margin-bottom: 30px;
-            letter-spacing: -3px;
+            margin-bottom: 40px;
+            letter-spacing: -4px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
             user-select: none;
+            cursor: pointer; /* Clickable for hidden admin */
         }
-        .logo-main span:nth-child(1) { color: #4285F4; } /* S */
-        .logo-main span:nth-child(2) { color: #EA4335; } /* H */
-        .logo-main span:nth-child(3) { color: #FBBC05; } /* O */
-        .logo-main span:nth-child(4) { color: #4285F4; } /* W */
-        .logo-main span:nth-child(5) { color: #34A853; } /* R */
-        .logo-main span:nth-child(6) { color: #EA4335; } /* O */
-        .logo-main span:nth-child(7) { color: #FBBC05; } /* O */
-        .logo-main span:nth-child(8) { color: #34A853; } /* M */
 
-        /* --- Glassmorphism Search Box --- */
-        .search-box {
-            position: relative;
+        .logo .s { color: #4285F4; }
+        .logo .h { color: #EA4335; }
+        .logo .o1 { color: #FBBC05; }
+        .logo .o2 { color: #4285F4; }
+        .logo .w { color: #34A853; }
+        .logo .r { color: #EA4335; }
+        .logo .o3 { color: #FBBC05; }
+        .logo .m { color: #34A853; }
+
+        .search-wrapper {
+            width: 100%;
             max-width: 650px;
-            margin: 0 auto 30px; /* Adjusted margin to accommodate button below */
-            background: var(--glass-bg);
+            background: rgba(255, 255, 255, 0.2);
             padding: 8px;
             border-radius: 60px;
             backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            transition: all 0.4s ease;
+            display: flex;
         }
 
-        .search-box:focus-within {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.03);
-        }
-
-        input[type="text"] {
+        .search-bar {
             width: 100%;
-            padding: 15px 30px;
-            border-radius: 60px;
+            padding: 18px 30px;
+            font-size: 20px;
             border: none;
-            font-size: 1.2rem;
             outline: none;
             background: transparent;
             color: white;
         }
 
-        input[type="text"]::placeholder { color: rgba(255,255,255,0.7); }
+        .search-bar::placeholder { color: rgba(255, 255, 255, 0.7); }
 
-        /* --- Premium Buttons --- */
-        .btn-open-door {
-            background: white;
-            color: #333;
+        .button-container {
+            margin-top: 50px;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
             padding: 16px 40px;
+            font-size: 16px;
+            font-weight: 700;
             border: none;
             border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 700;
             cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .btn-open-door:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-            background: #f0f0f0;
-        }
-
-        .btn-back {
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-            border: 1px solid var(--glass-border);
-            padding: 8px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-bottom: 20px;
             transition: 0.3s;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-back:hover { background: white; color: black; }
-
-        /* --- Gallery & Cards Design --- */
-        .locations-grid {
-            display: none;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .location-card {
-            background: var(--glass-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            padding: 25px;
-            text-align: left;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-        }
-
-        .location-card:hover {
-            transform: translateY(-10px);
-            border-color: #fcf6ba;
-        }
-
-        .img-container img {
-            width: 100%;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            transition: transform 0.5s ease;
-        }
-
-        .location-card:hover .img-container img {
-            transform: scale(1.05);
-        }
-
-        .location-card h2 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .location-card p {
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-
-        /* --- Admin Panel Styling (Glassmorphism) --- */
-        #adminPanel {
-            display: none;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(20px);
-            padding: 40px;
-            margin-top: 50px;
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-        }
-
-        #adminPanel h3 {
-            margin: 20px 0 15px;
-            color: #fcf6ba;
             text-transform: uppercase;
-            letter-spacing: 1px;
+        }
+
+        .btn-search { background: white; color: #333; }
+        .btn-open { background: rgba(0, 0, 0, 0.3); color: white; border: 1px solid white; }
+
+        /* --- Admin UI Hidden --- */
+        #admin-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 5000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .admin-box {
+            background: #222;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid #444;
         }
 
         .admin-input {
             width: 100%;
-            padding: 12px 20px;
-            margin: 10px 0;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--glass-border);
-            border-radius: 50px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background: #111;
             color: white;
-            outline: none;
         }
 
-        .admin-input:focus {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: white;
-        }
-
-        select.admin-input {
-            appearance: none;
+        .admin-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: #4285F4;
+            color: white;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        .status {
-            font-style: italic;
-            color: #fcf6ba;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        hr { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 30px 0; }
-
-        footer {
-            margin-top: 50px;
-            padding: 20px;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            letter-spacing: 1px;
-        }
-
-        /* --- New Showroom Page Overlay --- */
-        #showroomOverlay {
-            display: none;
+        /* --- Door Page --- */
+        #door-page {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
+            top: 0; left: 100%; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             z-index: 2000;
+            transition: 0.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             overflow-y: auto;
-            padding-bottom: 50px;
+            padding-top: 100px;
         }
 
-        #showroomOverlay nav {
-            position: sticky;
-        }
+        #door-page.active { left: 0; }
 
+        .location-section { margin-top: 50px; text-align: left; width: 90%; }
+        .location-title { font-size: 24px; border-left: 5px solid gold; padding-left: 15px; margin-bottom: 20px; color: white; }
+        .showroom-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .gallery-item { border-radius: 15px; overflow: hidden; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
+        .gallery-item img { width: 100%; height: 200px; object-fit: cover; }
+        .item-info { padding: 10px; text-align: center; color: white; font-size: 14px; }
+
+        footer { position: absolute; bottom: 25px; color: rgba(255,255,255,0.8); font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <nav>
+    <div id="admin-overlay">
+        <div class="admin-box" id="login-box">
+            <h2>Admin Login</h2>
+            <input type="password" id="passInput" class="admin-input" placeholder="Password">
+            <button class="admin-btn" onclick="checkPassword()">Login</button>
+            <p onclick="closeAdmin()" style="text-align:center; margin-top:10px; cursor:pointer; font-size:12px;">Close</p>
+        </div>
+        <div class="admin-box" id="add-box" style="display:none;">
+            <h2>Add New Sample</h2>
+            <input type="text" id="locInput" class="admin-input" placeholder="Location Name">
+            <input type="text" id="itemName" class="admin-input" placeholder="Item Name">
+            <input type="text" id="imgUrl" class="admin-input" placeholder="Image URL (Optional)">
+            <label style="font-size: 12px; color: #888;">OR Upload Photo:</label>
+            <input type="file" id="fileInput" class="admin-input" accept="image/*" style="padding: 5px;">
+            <button class="admin-btn" onclick="saveToFirebase()" style="background:#34A853;">Add Website Per</button>
+            <button class="admin-btn" onclick="closeAdmin()" style="background:#EA4335; margin-top:10px;">Exit</button>
+        </div>
+    </div>
+
+    <header>
+        <button class="share-btn" onclick="shareWebsite()"><span>Share</span></button>
         <div class="header-title">SHOWROOM</div>
-        <a href="#" class="admin-link" onclick="toggleAdmin()">Admin Access</a>
-    </nav>
+    </header>
 
-    <div class="container" id="mainHome">
-        <div class="logo-main">
-            <span>S</span><span>H</span><span>O</span><span>W</span><span>R</span><span>O</span><span>O</span><span>M</span>
-        </div>
-        
-        <div class="search-box">
-            <input type="text" id="locationSearch" placeholder="Experience the Luxury (e.g. 'mt1')..." onkeyup="filterLocations()">
+    <div class="main-content">
+        <div class="logo" ondblclick="handleLogoClick()" onclick="handleLogoClickMobile()">
+            <span class="s">S</span><span class="h">h</span><span class="o1">o</span><span class="o2">w</span><span class="w">r</span><span class="r">o</span><span class="o3">o</span><span class="m">m</span>
         </div>
 
-        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
-            <button class="btn-open-door" onclick="openNewShowroomPage()" style="background: var(--gold-gradient); color: #1a1a1a;">Open Showroom</button>
-        </div>
-        
-        <div id="statusText" class="status" style="display: none; margin-top: 20px;">Luxury locations discovered</div>
-
-        <div class="locations-grid" id="locationsGrid">
-            
-            <div class="location-card" id="card-welcomehall">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2>Welcome Hall</h2>
-                <p>Step into luxury at our main entrance.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
-            <div class="location-card" id="card-urbanwolk">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2>Urban Wolk</h2>
-                <p>Experience the vibe of modern city life.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
-            <div class="location-card" id="card-electra">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2>Electra</h2>
-                <p>The hub of future electric innovation.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
-            <div class="location-card" id="card-gardan">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2>Gardan</h2>
-                <p>Refresh your senses in our green zone.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
+        <div class="search-wrapper">
+            <input type="text" id="mainSearch" class="search-bar" placeholder="Experience the Luxury...">
         </div>
 
-        <div id="adminPanel">
-            <button class="btn-back" onclick="toggleAdmin()">← Back</button>
-            
-            <h3>Add New Location</h3>
-            <input type="text" id="newLocId" class="admin-input" placeholder="Unique ID (e.g. card-office)">
-            <input type="text" id="newLocTitle" class="admin-input" placeholder="Location Title">
-            <input type="text" id="newLocDesc" class="admin-input" placeholder="Description">
-            <button class="btn-open-door" onclick="addNewLocation()" style="width: 100%;">Create Location</button>
-            
-            <hr>
-
-            <h3>Upload Content</h3>
-            <select id="uploadType" class="admin-input" onchange="toggleUploadType()">
-                <option value="location">Main Location Photo</option>
-                <option value="item">Specific Item</option>
-            </select>
-            <select id="targetLocation" class="admin-input">
-                <option value="card-welcomehall">Welcome Hall</option>
-                <option value="card-urbanwolk">Urban Wolk</option>
-                <option value="card-electra">Electra</option>
-                <option value="card-gardan">Gardan</option>
-            </select>
-            <input type="text" id="itemName" class="admin-input" placeholder="Item Name" style="display:none;">
-            <input type="file" id="photoFile" class="admin-input" accept="image/*" style="padding: 10px;">
-            <button class="btn-open-door" onclick="uploadPhoto()" style="width: 100%;">Save to Showroom</button>
-            
-            <hr>
-            <h3>Delete Specific Item</h3>
-            <input type="text" id="deleteItemSearch" class="admin-input" placeholder="Search item to delete (e.g. tl10)..." onkeyup="searchItemsToDelete()">
-            <div id="deleteSearchResults" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; justify-content: center;"></div>
+        <div class="button-container">
+            <button class="btn btn-search" onclick="triggerSearch()">Search Now</button>
+            <button class="btn btn-open" onclick="openDoor()">Open Door Showroom</button>
         </div>
     </div>
 
-    <div id="showroomOverlay">
-        <nav>
-            <div class="header-title">WELCOME SHOWROOM</div>
-            <a href="#" class="admin-link" onclick="closeShowroomPage()">Close Page</a>
-        </nav>
-        <div class="container" id="overlayContainer">
-            </div>
+    <div id="door-page">
+        <header><div class="header-title">Welcome Showroom</div></header>
+        <div class="welcome-content" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+            <h1 style="color:white;">Luxury Collections</h1>
+            <div id="showroomGallery" style="width:90%;"></div>
+            <button onclick="closeDoor()" style="margin:50px; padding:15px 30px; border-radius:30px; cursor:pointer;">Close Door</button>
+        </div>
     </div>
 
-    <center>
-        <footer>&copy; 2026 SHOWROOM | Premium Digital Experience</footer>
-    </center>
+    <footer>&copy; 2026 Showroom Elite</footer>
 
-    <script>
-        // --- FIREBASE CONFIGURATION ---
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
         const firebaseConfig = {
           apiKey: "AIzaSyB_b97VYqxV4cmNfQPCdXBfRDLG-Wjzlas",
           authDomain: "showroom-6b354.firebaseapp.com",
           projectId: "showroom-6b354",
           storageBucket: "showroom-6b354.firebasestorage.app",
           messagingSenderId: "261135013864",
-          appId: "1:261135013864:web:2f718ebf2b7a411852365d",
-          measurementId: "G-Q8B3XR50PF"
+          appId: "1:261135013864:web:2f718ebf2b7a411852365d"
         };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const analytics = firebase.analytics();
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-        // --- LOGIC REMAINS UNTOUCHED AS PER RULES ---
-        
-        // Load saved images and locations on startup
-        window.onload = function() {
-            const savedLocs = JSON.parse(localStorage.getItem('showroomExtraLocs') || '[]');
-            savedLocs.forEach(loc => createLocationElement(loc.id, loc.title, loc.desc));
-            updateAdminDropdown();
+        let allFirebaseData = [];
+        const galleryContainer = document.getElementById('showroomGallery');
 
-            const savedImages = JSON.parse(localStorage.getItem('showroomImages') || '{}');
-            const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-            
-            for (let id in savedImages) {
-                const card = document.getElementById(id);
-                if (card) {
-                    card.querySelector('.img-container').innerHTML = `<img src="${savedImages[id]}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
-                }
-            }
+        // Fetch Data
+        const q = query(collection(db, "photos"), orderBy("createdAt", "desc"));
+        onSnapshot(q, (snapshot) => {
+            allFirebaseData = [];
+            snapshot.forEach((doc) => allFirebaseData.push(doc.data()));
+            renderGallery(document.getElementById('mainSearch').value);
+        });
 
-            for (let locId in savedItems) {
-                const card = document.getElementById(locId);
-                if(card) {
-                   const container = card.querySelector('.items-container');
-                   savedItems[locId].forEach(item => {
-                       container.innerHTML += `<div class="item-box" data-name="${item.name}" style="width: 80px; text-align: center;"><img src="${item.img}" style="width:100%; border-radius:5px;"><small style="display:block; margin-top:5px; font-size:10px;">${item.name}</small></div>`;
-                   });
-                }
-            }
-        };
+        // Add Data
+        window.saveToFirebase = async function() {
+            const loc = document.getElementById('locInput').value;
+            const item = document.getElementById('itemName').value;
+            let url = document.getElementById('imgUrl').value;
+            const file = document.getElementById('fileInput').files[0];
 
-        function createLocationElement(id, title, desc) {
-            const grid = document.getElementById('locationsGrid');
-            if(document.getElementById(id)) return;
-            const card = document.createElement('div');
-            card.className = 'location-card';
-            card.id = id;
-            card.innerHTML = `
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2>${title}</h2>
-                <p>${desc}</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            `;
-            grid.appendChild(card);
-        }
+            if(!loc || !item) return alert("Location aur Item Name bharna zaroori hai!");
 
-        function addNewLocation() {
-            const id = document.getElementById('newLocId').value.trim();
-            const title = document.getElementById('newLocTitle').value.trim();
-            const desc = document.getElementById('newLocDesc').value.trim();
-            if(!id || !title) return alert("ID and Title are required");
-            
-            createLocationElement(id, title, desc);
-            const savedLocs = JSON.parse(localStorage.getItem('showroomExtraLocs') || '[]');
-            savedLocs.push({id, title, desc});
-            localStorage.setItem('showroomExtraLocs', JSON.stringify(savedLocs));
-            updateAdminDropdown();
-            alert("Location created!");
-        }
-
-        function updateAdminDropdown() {
-            const select = document.getElementById('targetLocation');
-            const cards = document.getElementsByClassName('location-card');
-            select.innerHTML = "";
-            for(let card of cards) {
-                let title = card.querySelector('h2').innerText;
-                let option = document.createElement('option');
-                option.value = card.id;
-                option.text = title;
-                select.add(option);
-            }
-        }
-
-        function toggleAdmin() {
-            let panel = document.getElementById('adminPanel');
-            
-            // If panel is already open, just close it
-            if (panel.style.display === 'block') {
-                panel.style.display = 'none';
-            } else {
-                // Ask for password before opening
-                let password = prompt("Enter Admin Password:");
-                if (password === "Imran123") {
-                    panel.style.display = 'block';
-                } else {
-                    alert("Incorrect Password! Access Denied.");
-                }
-            }
-        }
-
-        function toggleUploadType() {
-            const type = document.getElementById('uploadType').value;
-            document.getElementById('itemName').style.display = (type === 'item') ? 'block' : 'none';
-        }
-
-        function uploadPhoto() {
-            const type = document.getElementById('uploadType').value;
-            const locationId = document.getElementById('targetLocation').value;
-            const itemName = document.getElementById('itemName').value;
-            const fileInput = document.getElementById('photoFile');
-            const file = fileInput.files[0];
-            
-            if(!file) return alert("Please select an image file");
-            if(type === 'item' && !itemName) return alert("Please enter item name");
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const url = e.target.result;
-                
-                if(type === 'location') {
-                    const card = document.getElementById(locationId);
-                    card.querySelector('.img-container').innerHTML = `<img src="${url}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
-                    const savedImages = JSON.parse(localStorage.getItem('showroomImages') || '{}');
-                    savedImages[locationId] = url;
-                    localStorage.setItem('showroomImages', JSON.stringify(savedImages));
-                } else {
-                    const container = document.getElementById(locationId).querySelector('.items-container');
-                    container.innerHTML += `<div class="item-box" data-name="${itemName}" style="width: 80px; text-align: center;"><img src="${url}" style="width:100%; border-radius:5px;"><small style="display:block; margin-top:5px; font-size:10px;">${itemName}</small></div>`;
-                    
-                    const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-                    if(!savedItems[locationId]) savedItems[locationId] = [];
-                    savedItems[locationId].push({name: itemName, img: url});
-                    localStorage.setItem('showroomItems', JSON.stringify(savedItems));
-                }
-
-                alert("Saved successfully!");
-                location.reload(); // Page refresh added after successful upload
-                fileInput.value = "";
-                document.getElementById('itemName').value = "";
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function searchItemsToDelete() {
-            const rawQuery = document.getElementById('deleteItemSearch').value.trim().toLowerCase();
-            const normalizedQuery = rawQuery.replace(/[-\s]/g, '');
-            const resultsDiv = document.getElementById('deleteSearchResults');
-            resultsDiv.innerHTML = "";
-            if(!rawQuery) return;
-
-            const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-            for(let locId in savedItems) {
-                savedItems[locId].forEach((item) => {
-                    const normalizedItemName = item.name.toLowerCase().replace(/[-\s]/g, '');
-                    if(normalizedItemName.includes(normalizedQuery)) {
-                        const itemDiv = document.createElement('div');
-                        itemDiv.style = "width: 80px; text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); padding: 5px; border-radius: 10px; background: rgba(0,0,0,0.2);";
-                        itemDiv.title = "Click to delete this item";
-                        itemDiv.innerHTML = `<img src="${item.img}" style="width:100%; border-radius:5px;"><br><small style="font-size:9px;">${item.name}</small><br><b style="color:#EA4335; font-size:9px;">Delete</b>`;
-                        itemDiv.onclick = () => deleteSpecificItem(item.name);
-                        resultsDiv.appendChild(itemDiv);
-                    }
+            // Function to handle Firestore Save
+            const uploadToDB = async (finalUrl) => {
+                await addDoc(collection(db, "photos"), {
+                    location: loc,
+                    item: item,
+                    url: finalUrl,
+                    createdAt: serverTimestamp()
                 });
+                alert("Success! Website par add ho gaya.");
+                document.getElementById('itemName').value = "";
+                document.getElementById('imgUrl').value = "";
+                document.getElementById('fileInput').value = "";
+            };
+
+            // Logic: If file is selected, convert to base64, else use URL or Placeholder
+            if(file) {
+                const reader = new FileReader();
+                reader.onloadend = async function() {
+                    await uploadToDB(reader.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // If no URL and no File, use a placeholder or empty
+                const finalUrl = url ? url : "https://via.placeholder.com/400x300?text=No+Photo";
+                await uploadToDB(finalUrl);
             }
-        }
+        };
 
-        function deleteSpecificItem(nameToDelete) {
-            if(!confirm(`Are you sure you want to delete "${nameToDelete}"?`)) return;
+        function renderGallery(filter = "") {
+            galleryContainer.innerHTML = "";
+            const lowerFilter = filter.toLowerCase();
 
-            // --- DELETION LOGIC FOR TL-1 AND OTHERS ---
-            let savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-            let found = false;
+            // All unique locations
+            const locations = ["Welcome Hall", "Urban Work", "Electra", "Public Amenities"];
+            allFirebaseData.forEach(d => { if(!locations.includes(d.location)) locations.push(d.location); });
 
-            // 1. Storage se delete karein
-            for(let locId in savedItems) {
-                let initialLength = savedItems[locId].length;
-                savedItems[locId] = savedItems[locId].filter(item => item.name.toLowerCase().trim() !== nameToDelete.toLowerCase().trim());
-                if(savedItems[locId].length < initialLength) found = true;
-            }
-
-            // 2. UI se turant remove karein (Forced UI cleaning)
-            const allItemBoxes = document.querySelectorAll('.item-box');
-            allItemBoxes.forEach(box => {
-                const boxName = box.getAttribute('data-name');
-                if(boxName && boxName.toLowerCase().trim() === nameToDelete.toLowerCase().trim()) {
-                    box.remove();
-                    found = true;
+            locations.forEach(loc => {
+                let items = allFirebaseData.filter(i => i.location === loc);
+                
+                // Static Default Items
+                if(loc === "Welcome Hall") {
+                    items.push({item:"TL14", url:"https://via.placeholder.com/400x300?text=TL14"});
+                    items.push({item:"TL41", url:"https://via.placeholder.com/400x300?text=TL41"});
                 }
+
+                const filtered = items.filter(i => (i.item && i.item.toLowerCase().includes(lowerFilter)) || (loc && loc.toLowerCase().includes(lowerFilter)));
+                if(filtered.length === 0 && filter !== "") return;
+
+                const sec = document.createElement('div');
+                sec.className = "location-section";
+                sec.innerHTML = `<h2 class="location-title">${loc}</h2><div class="showroom-gallery"></div>`;
+                const grid = sec.querySelector('.showroom-gallery');
+
+                filtered.forEach(item => {
+                    grid.innerHTML += `<div class="gallery-item"><img src="${item.url}"><div class="item-info">${item.item}</div></div>`;
+                });
+                galleryContainer.appendChild(sec);
             });
-
-            if(found) {
-                localStorage.setItem('showroomItems', JSON.stringify(savedItems));
-                alert("Item '" + nameToDelete + "' deleted successfully.");
-                location.reload(); // Refresh to sync everything
-            } else {
-                alert("No item found with the name: " + nameToDelete);
-            }
         }
 
-        function filterLocations() {
-            const rawInput = document.getElementById('locationSearch').value.toLowerCase();
-            const normalizedInput = rawInput.replace(/[-\s]/g, '');
-            let grid = document.getElementById('locationsGrid');
-            let status = document.getElementById('statusText');
-            let cards = document.getElementsByClassName('location-card');
-
-            if (rawInput.length > 0) {
-                grid.style.display = 'grid';
-                status.style.display = 'block';
-            } else {
-                grid.style.display = 'none';
-                status.style.display = 'none';
-            }
-
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
-                let items = cards[i].getElementsByClassName('item-box');
-                let foundItem = false;
-
-                for(let j=0; j < items.length; j++) {
-                    let itemName = items[j].getAttribute('data-name').toLowerCase();
-                    let normalizedItemName = itemName.replace(/[-\s]/g, '');
-                    if(normalizedItemName.includes(normalizedInput)) {
-                        items[j].style.display = "block";
-                        foundItem = true;
-                    } else {
-                        items[j].style.display = (rawInput === "") ? "block" : "none";
-                    }
-                }
-
-                if (title.includes(rawInput) || foundItem) {
-                    cards[i].style.display = "block";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
-        }
-
-        function goBack() {
-            document.getElementById('locationSearch').value = "";
-            document.getElementById('locationsGrid').style.display = 'none';
-            document.getElementById('statusText').style.display = 'none';
-        }
-
-        // --- NEW FUNCTIONS FOR THE ADDED BUTTON ---
-        function openNewShowroomPage() {
-            const overlay = document.getElementById('showroomOverlay');
-            const overlayContainer = document.getElementById('overlayContainer');
-            const originalGrid = document.getElementById('locationsGrid');
-            
-            // Grid ko temporary show karte hain clone ke liye
-            originalGrid.style.display = 'grid';
-            
-            // Content ko clone karte hain naye page ke liye
-            overlayContainer.innerHTML = originalGrid.outerHTML;
-            const clonedGrid = overlayContainer.querySelector('.locations-grid');
-            clonedGrid.style.display = 'grid';
-            
-            // Cloned cards ke back buttons hide kar dete hain
-            const backBtns = clonedGrid.querySelectorAll('.btn-back');
-            backBtns.forEach(btn => btn.style.display = 'none');
-
-            // Show all items in cloned grid
-            const cards = clonedGrid.getElementsByClassName('location-card');
-            for (let i = 0; i < cards.length; i++) {
-                cards[i].style.display = "block";
-            }
-
-            overlay.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Stop background scrolling
-        }
-
-        function closeShowroomPage() {
-            document.getElementById('showroomOverlay').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Re-enable scrolling
-            
-            // Original grid ko wapis hide kar dete hain agar search nahi hai
-            if(document.getElementById('locationSearch').value === "") {
-                document.getElementById('locationsGrid').style.display = 'none';
-            }
-        }
-
+        window.triggerSearch = () => { renderGallery(document.getElementById('mainSearch').value); openDoor(); };
+        document.getElementById('mainSearch').addEventListener('input', (e) => renderGallery(e.target.value));
     </script>
 
+    <script>
+        // Hidden Admin Login Logic
+        let clickCount = 0;
+        function handleLogoClick() { openAdmin(); } // For Desktop Double Click
+        function handleLogoClickMobile() {
+            clickCount++;
+            if (clickCount === 3) { openAdmin(); clickCount = 0; }
+            setTimeout(() => { clickCount = 0; }, 1000);
+        }
+
+        function openAdmin() { document.getElementById('admin-overlay').style.display = 'flex'; }
+        function closeAdmin() { document.getElementById('admin-overlay').style.display = 'none'; }
+
+        function checkPassword() {
+            if(document.getElementById('passInput').value === "Imran123") {
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('add-box').style.display = 'block';
+            } else { alert("Galat Password!"); }
+        }
+
+        function openDoor() { document.getElementById('door-page').classList.add('active'); }
+        function closeDoor() { document.getElementById('door-page').classList.remove('active'); }
+
+        function shareWebsite() {
+            const data = { title: 'Showroom', url: 'https://kuwaitpm786-creator.github.io/imran.showroom/' };
+            if (navigator.share) navigator.share(data);
+            else { navigator.clipboard.writeText(data.url); alert("Link Copied!"); }
+        }
+    </script>
 </body>
 </html>
