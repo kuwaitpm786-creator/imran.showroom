@@ -2,285 +2,703 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tic Tac Toe - Pro</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<style>
-  :root {
-    --bg-dark: #1a1f26;
-    --header-dark: #111;
-    --green-accent: #0d6144;
-    --red-accent: #da3633;
-    --input-bg: #333;
-    --text-gray: #8b949e;
-    --yellow-accent: #f1c40f;
-    --blue-accent: #3498db;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
-body { background-color: var(--bg-dark); color: white; overflow-x: hidden; }
-
-/* Updated Nav: Removed hamburger and centered logo */
-.top-nav { 
-    background: var(--header-dark); 
-    padding: 12px; 
-    display: flex; 
-    flex-direction: column; /* Added to stack Tic Tac Toe and Showroom */
-    justify-content: center; 
-    align-items: center; 
-    border-bottom: 1px solid #333; 
-}
-.logo-text { font-weight: 800; font-size: 1.2rem; color: var(--yellow-accent); }
-/* Showroom Text Style */
-.showroom-text { font-size: 1rem; color: white; margin-top: 2px; font-weight: bold; }
-
-.banner-bar { background-color: #0d4429; display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; font-size: 13px; }
-
-.action-btns { display: flex; gap: 5px; }
-
-.btn-top { padding: 5px 10px; border: none; border-radius: 3px; font-weight: bold; color: white; cursor: pointer; font-size: 11px; }
-.btn-deposit { background: #238636; }
-
-.btn-main { padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; color: white; cursor: pointer; background-color: var(--green-accent); }
-
-.btn-back { background: var(--red-accent); color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 5px; margin-bottom: 10px; }
-
-.container { padding: 15px; }
-
-#mainDashboard { display: block; text-align: center; padding-top: 50px; }
-#amountScreen, #qrScreen, #uploadModal { display: none; }
-
-.amount-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 15px; }
-.amt-box { border: 1px solid #444; padding: 10px 0; text-align: center; font-size: 12px; cursor: pointer; background: transparent; }
-
-.amount-input-wrapper { background: #12161c; display: flex; align-items: center; padding: 12px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #333; }
-
-.overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 1000; overflow-y: auto; }
-
-.qr-card { background: #242c37; padding: 20px; border-radius: 4px; text-align: center; margin-top: 10px; }
-
-.qr-img-box { width: 100%; max-width: 240px; background: white; margin: 15px auto; padding: 10px; border-radius: 8px; }
-.qr-img-box img { width: 100%; height: auto; display: block; }
-
-/* Google Style Search Box Styling */
-.google-search-container {
-    margin: 20px auto 40px auto;
-    max-width: 500px;
-    width: 90%;
-}
-.search-box-wrapper {
-    background: white;
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    border-radius: 30px;
-    box-shadow: 0 1px 6px rgba(32,33,36,0.28);
-}
-.search-box-wrapper input {
-    border: none;
-    outline: none;
-    flex-grow: 1;
-    font-size: 16px;
-    color: #202124;
-    padding: 0 10px;
-}
-.search-box-wrapper i {
-    color: #9aa0a6;
-    font-size: 18px;
-}
-
-.upload-box { border: 2px dashed #4a5568; padding: 30px; text-align: center; color: #8b949e; margin: 15px 0; border-radius: 4px; cursor: pointer; }
-</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showroom | Premium Locator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --accent-color: #c5a059; /* Gold accent */
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --gold-gradient: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- Premium Animated Mesh Gradient Background --- */
+        body {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Blurred Background Circles */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            filter: blur(60px);
+            z-index: -1;
+        }
+        body::before { top: -100px; left: -100px; }
+        body::after { bottom: -100px; right: -100px; }
+
+        /* --- Fixed Frosty Glass Header --- */
+        nav {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Metallic Gold Title */
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .admin-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .admin-link:hover { background: white; color: black; }
+
+        /* --- Main Content Layout --- */
+        .container {
+            max-width: 1100px;
+            margin: 120px auto 40px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        /* Google-Style Multi-Color Logo */
+        .logo-main {
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 30px;
+            letter-spacing: -3px;
+            user-select: none;
+        }
+        .logo-main span:nth-child(1) { color: #4285F4; } /* S */
+        .logo-main span:nth-child(2) { color: #EA4335; } /* H */
+        .logo-main span:nth-child(3) { color: #FBBC05; } /* O */
+        .logo-main span:nth-child(4) { color: #4285F4; } /* W */
+        .logo-main span:nth-child(5) { color: #34A853; } /* R */
+        .logo-main span:nth-child(6) { color: #EA4335; } /* O */
+        .logo-main span:nth-child(7) { color: #FBBC05; } /* O */
+        .logo-main span:nth-child(8) { color: #34A853; } /* M */
+
+        /* --- Glassmorphism Search Box --- */
+        .search-box {
+            position: relative;
+            max-width: 650px;
+            margin: 0 auto 30px; /* Adjusted margin to accommodate button below */
+            background: var(--glass-bg);
+            padding: 8px;
+            border-radius: 60px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+        }
+
+        .search-box:focus-within {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.03);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px 30px;
+            border-radius: 60px;
+            border: none;
+            font-size: 1.2rem;
+            outline: none;
+            background: transparent;
+            color: white;
+        }
+
+        input[type="text"]::placeholder { color: rgba(255,255,255,0.7); }
+
+        /* --- Premium Buttons --- */
+        .btn-open-door {
+            background: white;
+            color: #333;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-open-door:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            background: #f0f0f0;
+        }
+
+        .btn-back {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: 1px solid var(--glass-border);
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-back:hover { background: white; color: black; }
+
+        /* --- Gallery & Cards Design --- */
+        .locations-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .location-card {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            padding: 25px;
+            text-align: left;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .location-card:hover {
+            transform: translateY(-10px);
+            border-color: #fcf6ba;
+        }
+
+        .img-container img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            transition: transform 0.5s ease;
+        }
+
+        .location-card:hover .img-container img {
+            transform: scale(1.05);
+        }
+
+        .location-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .location-card p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        /* --- Admin Panel Styling (Glassmorphism) --- */
+        #adminPanel {
+            display: none;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            margin-top: 50px;
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        #adminPanel h3 {
+            margin: 20px 0 15px;
+            color: #fcf6ba;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .admin-input {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: white;
+            outline: none;
+        }
+
+        .admin-input:focus {
+            background: rgba(255,255,255,0.2);
+            border-color: white;
+        }
+
+        select.admin-input {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .status {
+            font-style: italic;
+            color: #fcf6ba;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        hr { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 30px 0; }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* --- New Showroom Page Overlay --- */
+        #showroomOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
+            z-index: 2000;
+            overflow-y: auto;
+            padding-bottom: 50px;
+        }
+
+        #showroomOverlay nav {
+            position: sticky;
+        }
+
+    </style>
 </head>
 <body>
 
-    <header class="top-nav">
-        <div class="logo-section" onclick="location.reload()" style="cursor:pointer; text-align: center;">
-            <div class="showroom-text">Showroom</div>
+    <nav>
+        <div class="header-title">SHOWROOM</div>
+        <a href="#" class="admin-link" onclick="toggleAdmin()">Admin Access</a>
+    </nav>
+
+    <div class="container" id="mainHome">
+        <div class="logo-main">
+            <span>S</span><span>H</span><span>O</span><span>W</span><span>R</span><span>O</span><span>O</span><span>M</span>
         </div>
-    </header>
-
-    <div class="banner-bar">
-        <span></span>
-        <div class="action-btns">
-            </div>
-    </div>
-
-    <div class="container" id="mainDashboard">
         
-        <div class="google-search-container">
-            <h1 style="color: white; margin-bottom: 20px; font-size: 2.5rem; font-weight: 500;">
-                <span style="color: #4285F4;">S</span><span style="color: #EA4335;">h</span><span style="color: #FBBC05;">o</span><span style="color: #4285F4;">w</span><span style="color: #34A853;">r</span><span style="color: #EA4335;">o</span><span style="color: #FBBC05;">o</span><span style="color: #34A853;">m</span>
-            </h1>
-            <div class="search-box-wrapper">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search Showroom or type a URL">
-                <i class="fas fa-microphone"></i>
+        <div class="search-box">
+            <input type="text" id="locationSearch" placeholder="Experience the Luxury (e.g. 'mt1')..." onkeyup="filterLocations()">
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
+            <button class="btn-open-door" onclick="openNewShowroomPage()" style="background: var(--gold-gradient); color: #1a1a1a;">Open Showroom</button>
+        </div>
+        
+        <div id="statusText" class="status" style="display: none; margin-top: 20px;">Luxury locations discovered</div>
+
+        <div class="locations-grid" id="locationsGrid">
+            
+            <div class="location-card" id="card-welcomehall">
+                <button class="btn-back" onclick="goBack()">← Back</button>
+                <div class="img-container"></div>
+                <h2>Welcome Hall</h2>
+                <p>Step into luxury at our main entrance.</p>
+                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
             </div>
+
+            <div class="location-card" id="card-urbanwolk">
+                <button class="btn-back" onclick="goBack()">← Back</button>
+                <div class="img-container"></div>
+                <h2>Urban Wolk</h2>
+                <p>Experience the vibe of modern city life.</p>
+                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            </div>
+
+            <div class="location-card" id="card-electra">
+                <button class="btn-back" onclick="goBack()">← Back</button>
+                <div class="img-container"></div>
+                <h2>Electra</h2>
+                <p>The hub of future electric innovation.</p>
+                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            </div>
+
+            <div class="location-card" id="card-gardan">
+                <button class="btn-back" onclick="goBack()">← Back</button>
+                <div class="img-container"></div>
+                <h2>Gardan</h2>
+                <p>Refresh your senses in our green zone.</p>
+                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            </div>
+
         </div>
 
-        <div style="color:var(--text-gray); margin-bottom: 30px;">
-            <p style="font-size:12px;">Select 'Open Door Showroom' to add coins.</p>
+        <div id="adminPanel">
+            <button class="btn-back" onclick="toggleAdmin()">← Back</button>
+            
+            <h3>Add New Location</h3>
+            <input type="text" id="newLocId" class="admin-input" placeholder="Unique ID (e.g. card-office)">
+            <input type="text" id="newLocTitle" class="admin-input" placeholder="Location Title">
+            <input type="text" id="newLocDesc" class="admin-input" placeholder="Description">
+            <button class="btn-open-door" onclick="addNewLocation()" style="width: 100%;">Create Location</button>
+            
+            <hr>
+
+            <h3>Upload Content</h3>
+            <select id="uploadType" class="admin-input" onchange="toggleUploadType()">
+                <option value="location">Main Location Photo</option>
+                <option value="item">Specific Item</option>
+            </select>
+            <select id="targetLocation" class="admin-input">
+                <option value="card-welcomehall">Welcome Hall</option>
+                <option value="card-urbanwolk">Urban Wolk</option>
+                <option value="card-electra">Electra</option>
+                <option value="card-gardan">Gardan</option>
+            </select>
+            <input type="text" id="itemName" class="admin-input" placeholder="Item Name" style="display:none;">
+            <input type="file" id="photoFile" class="admin-input" accept="image/*" style="padding: 10px;">
+            <button class="btn-open-door" onclick="uploadPhoto()" style="width: 100%;">Save to Showroom</button>
+            
+            <hr>
+            <h3>Delete Specific Item</h3>
+            <input type="text" id="deleteItemSearch" class="admin-input" placeholder="Search item to delete (e.g. tl10)..." onkeyup="searchItemsToDelete()">
+            <div id="deleteSearchResults" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; justify-content: center;"></div>
         </div>
-
-        <button class="btn-main btn-deposit" style="width:100%; margin-bottom: 10px;" onclick="openAmountScreen('Deposit')">
-            Open Door Showroom
-        </button>
-
     </div>
 
-    <div id="amountScreen" class="container">
-        <button class="btn-back" onclick="location.reload()" style="background:#da3633;">
-            <i class="fas fa-arrow-left"></i> Back
-        </button>
-
-        <div class="amount-grid">
-            <div class="amt-box" onclick="setAmount(300, 'adminQR'); goToQR();" style="font-size: 10px; font-weight: bold;">Welcome Hall</div>
-            <div class="amt-box" onclick="setAmount(500, 'urbanQR'); goToQR();" style="font-size: 10px; font-weight: bold;">Urban Walk</div>
-            <div class="amt-box" onclick="setAmount(1000, 'electraQR'); goToQR();" style="font-size: 10px; font-weight: bold;">Elactra</div>
-            <div class="amt-box" onclick="setAmount(5000, 'prayerQR'); goToQR();" style="font-size: 10px; font-weight: bold;">Prayer Hall</div>
-            <div class="amt-box" onclick="setAmount(10000, 'amenitiesQR'); goToQR();" style="font-size: 9px; font-weight: bold;">Public Amenities</div>
-        </div>
-
-        <div class="amount-input-wrapper">
-            <div onclick="adjustAmount(-100)" style="padding:0 15px; cursor:pointer;">
-                <i class="fas fa-minus"></i>
+    <div id="showroomOverlay">
+        <nav>
+            <div class="header-title">WELCOME SHOWROOM</div>
+            <a href="#" class="admin-link" onclick="closeShowroomPage()">Close Page</a>
+        </nav>
+        <div class="container" id="overlayContainer">
             </div>
-            <div id="amtLabel" style="flex-grow:1; text-align:center; font-weight:bold;">Amount</div>
-            <div onclick="adjustAmount(100)" style="padding:0 15px; cursor:pointer;">
-                <i class="fas fa-plus"></i>
-            </div>
-        </div>
-
-        </div>
-
-    <div id="qrScreen" class="container">
-        <button class="btn-back" onclick="openAmountScreen('Deposit')" style="background:#da3633;">
-            <i class="fas fa-arrow-left"></i> Back
-        </button>
-
-        <div style="font-size: 14px; margin-bottom: 10px;">
-            Selected Amount: 
-            <span id="finalAmt" style="color:var(--yellow-accent);">₹0</span>
-        </div>
-
-        <div class="qr-card">
-            <h4 style="margin-bottom:5px;">IMRAN AHMAD ANSARI</h4>
-            <p style="font-size:12px; color:#8b949e;">Scan & Pay Using PhonePe App</p>
-            <hr style="border:0; border-top:1px solid #444; margin:10px 0;">
-
-            <div class="qr-img-box">
-                <img id="main-qr-image" src="https://i.ibb.co/pBfV57Bq/1000082467.jpg" alt="QR Code">
-            </div>
-
-            <p style="font-size:11px; color:#8b949e;">(Min: 300 Max: 100000)</p>
-
-            <button class="btn-main" style="width:100%; margin-top:15px;" onclick="openUploadModal()">Pay Now</button>
-        </div>
     </div>
 
-    <div id="uploadModal" class="overlay" style="background: rgba(0,0,0,0.9);">
-        <div style="padding: 20px; max-width: 400px; margin: 50px auto; background: var(--bg-dark); border-radius: 8px; border-top: 3px solid var(--green-accent);">
+    <center>
+        <footer>&copy; 2026 SHOWROOM | Premium Digital Experience</footer>
+    </center>
 
-            <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-                <h4 style="color:var(--yellow-accent);">Deposit</h4>
-                <i class="fas fa-times" onclick="closeUploadModal()" style="cursor:pointer;"></i>
-            </div>
-
-            <p style="font-size:12px; color:var(--text-gray);">
-                Image Upload <span style="color:red;">*</span>
-            </p>
-
-            <div class="upload-box" onclick="document.getElementById('fileInput').click()">
-                <i class="fas fa-plus-circle" style="font-size:24px;"></i><br>
-                <span id="fileNameDisplay" style="font-size:12px;">upload payment screenshot</span>
-                <input type="file" id="fileInput" style="display:none;" onchange="updateFileName(this)">
-            </div>
-
-            <button class="btn-main" style="width:100%;" onclick="finalSubmit()">Submit</button>
-        </div>
-    </div>
     <script>
-let currentAmount = 0;
-let selectedCategoryKey = 'adminQR'; // Default key
+        // --- FIREBASE CONFIGURATION ---
+        const firebaseConfig = {
+          apiKey: "AIzaSyB_b97VYqxV4cmNfQPCdXBfRDLG-Wjzlas",
+          authDomain: "showroom-6b354.firebaseapp.com",
+          projectId: "showroom-6b354",
+          storageBucket: "showroom-6b354.firebasestorage.app",
+          messagingSenderId: "261135013864",
+          appId: "1:261135013864:web:2f718ebf2b7a411852365d",
+          measurementId: "G-Q8B3XR50PF"
+        };
 
-window.onload = function() {
-    // Initial default load
-    const savedQR = localStorage.getItem('adminQR');
-    if(savedQR) {
-        document.getElementById('main-qr-image').src = savedQR;
-    }
-}
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const analytics = firebase.analytics();
 
-function openAmountScreen(mode) {
-    document.getElementById('mainDashboard').style.display = 'none';
-    document.getElementById('amountScreen').style.display = 'block';
-    document.getElementById('qrScreen').style.display = 'none';
-}
+        // --- LOGIC REMAINS UNTOUCHED AS PER RULES ---
+        
+        // Load saved images and locations on startup
+        window.onload = function() {
+            const savedLocs = JSON.parse(localStorage.getItem('showroomExtraLocs') || '[]');
+            savedLocs.forEach(loc => createLocationElement(loc.id, loc.title, loc.desc));
+            updateAdminDropdown();
 
-function setAmount(v, key) { 
-    currentAmount = v; 
-    selectedCategoryKey = key || 'adminQR'; 
-    updateUI(); 
-}
+            const savedImages = JSON.parse(localStorage.getItem('showroomImages') || '{}');
+            const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
+            
+            for (let id in savedImages) {
+                const card = document.getElementById(id);
+                if (card) {
+                    card.querySelector('.img-container').innerHTML = `<img src="${savedImages[id]}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
+                }
+            }
 
-function adjustAmount(v) { 
-    currentAmount += v; 
-    if(currentAmount < 0) currentAmount = 0; 
-    updateUI(); 
-}
+            for (let locId in savedItems) {
+                const card = document.getElementById(locId);
+                if(card) {
+                   const container = card.querySelector('.items-container');
+                   savedItems[locId].forEach(item => {
+                       container.innerHTML += `<div class="item-box" data-name="${item.name}" style="width: 80px; text-align: center;"><img src="${item.img}" style="width:100%; border-radius:5px;"><small style="display:block; margin-top:5px; font-size:10px;">${item.name}</small></div>`;
+                   });
+                }
+            }
+        };
 
-function updateUI() { 
-    document.getElementById('amtLabel').innerText = currentAmount > 0 ? "₹" + currentAmount : "Amount"; 
-}
+        function createLocationElement(id, title, desc) {
+            const grid = document.getElementById('locationsGrid');
+            if(document.getElementById(id)) return;
+            const card = document.createElement('div');
+            card.className = 'location-card';
+            card.id = id;
+            card.innerHTML = `
+                <button class="btn-back" onclick="goBack()">← Back</button>
+                <div class="img-container"></div>
+                <h2>${title}</h2>
+                <p>${desc}</p>
+                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            `;
+            grid.appendChild(card);
+        }
 
-function goToQR() {
-    if(currentAmount < 300) return alert("Minimum ₹300 required");
-    
-    // Load image based on the button clicked
-    const savedQR = localStorage.getItem(selectedCategoryKey);
-    if(savedQR) {
-        document.getElementById('main-qr-image').src = savedQR;
-    } else {
-        // Fallback default image if nothing saved for this category
-        document.getElementById('main-qr-image').src = "https://i.ibb.co/pBfV57Bq/1000082467.jpg";
-    }
+        function addNewLocation() {
+            const id = document.getElementById('newLocId').value.trim();
+            const title = document.getElementById('newLocTitle').value.trim();
+            const desc = document.getElementById('newLocDesc').value.trim();
+            if(!id || !title) return alert("ID and Title are required");
+            
+            createLocationElement(id, title, desc);
+            const savedLocs = JSON.parse(localStorage.getItem('showroomExtraLocs') || '[]');
+            savedLocs.push({id, title, desc});
+            localStorage.setItem('showroomExtraLocs', JSON.stringify(savedLocs));
+            updateAdminDropdown();
+            alert("Location created!");
+        }
 
-    document.getElementById('amountScreen').style.display = 'none';
-    document.getElementById('qrScreen').style.display = 'block';
-    document.getElementById('finalAmt').innerText = "₹" + currentAmount;
-}
+        function updateAdminDropdown() {
+            const select = document.getElementById('targetLocation');
+            const cards = document.getElementsByClassName('location-card');
+            select.innerHTML = "";
+            for(let card of cards) {
+                let title = card.querySelector('h2').innerText;
+                let option = document.createElement('option');
+                option.value = card.id;
+                option.text = title;
+                select.add(option);
+            }
+        }
 
-function openUploadModal() { 
-    document.getElementById('uploadModal').style.display = 'block'; 
-}
+        function toggleAdmin() {
+            let panel = document.getElementById('adminPanel');
+            
+            // If panel is already open, just close it
+            if (panel.style.display === 'block') {
+                panel.style.display = 'none';
+            } else {
+                // Ask for password before opening
+                let password = prompt("Enter Admin Password:");
+                if (password === "Imran123") {
+                    panel.style.display = 'block';
+                } else {
+                    alert("Incorrect Password! Access Denied.");
+                }
+            }
+        }
 
-function closeUploadModal() { 
-    document.getElementById('uploadModal').style.display = 'none'; 
-}
+        function toggleUploadType() {
+            const type = document.getElementById('uploadType').value;
+            document.getElementById('itemName').style.display = (type === 'item') ? 'block' : 'none';
+        }
 
-function updateFileName(input) {
-    if(input.files && input.files[0]) {
-        document.getElementById('fileNameDisplay').innerText = "Selected: " + input.files[0].name;
-    }
-}
+        function uploadPhoto() {
+            const type = document.getElementById('uploadType').value;
+            const locationId = document.getElementById('targetLocation').value;
+            const itemName = document.getElementById('itemName').value;
+            const fileInput = document.getElementById('photoFile');
+            const file = fileInput.files[0];
+            
+            if(!file) return alert("Please select an image file");
+            if(type === 'item' && !itemName) return alert("Please enter item name");
 
-function finalSubmit() {
-    if(!document.getElementById('fileInput').files[0]) 
-        return alert("Please upload screenshot!");
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const url = e.target.result;
+                
+                if(type === 'location') {
+                    const card = document.getElementById(locationId);
+                    card.querySelector('.img-container').innerHTML = `<img src="${url}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
+                    const savedImages = JSON.parse(localStorage.getItem('showroomImages') || '{}');
+                    savedImages[locationId] = url;
+                    localStorage.setItem('showroomImages', JSON.stringify(savedImages));
+                } else {
+                    const container = document.getElementById(locationId).querySelector('.items-container');
+                    container.innerHTML += `<div class="item-box" data-name="${itemName}" style="width: 80px; text-align: center;"><img src="${url}" style="width:100%; border-radius:5px;"><small style="display:block; margin-top:5px; font-size:10px;">${itemName}</small></div>`;
+                    
+                    const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
+                    if(!savedItems[locationId]) savedItems[locationId] = [];
+                    savedItems[locationId].push({name: itemName, img: url});
+                    localStorage.setItem('showroomItems', JSON.stringify(savedItems));
+                }
 
-    alert("Deposit Request Submitted Successfully!");
-    location.reload();
-}
+                alert("Saved successfully!");
+                fileInput.value = "";
+                document.getElementById('itemName').value = "";
+            };
+            reader.readAsDataURL(file);
+        }
 
-/* toggleReport function and logic removed as requested */
+        function searchItemsToDelete() {
+            const rawQuery = document.getElementById('deleteItemSearch').value.trim().toLowerCase();
+            const normalizedQuery = rawQuery.replace(/[-\s]/g, '');
+            const resultsDiv = document.getElementById('deleteSearchResults');
+            resultsDiv.innerHTML = "";
+            if(!rawQuery) return;
+
+            const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
+            for(let locId in savedItems) {
+                savedItems[locId].forEach((item) => {
+                    const normalizedItemName = item.name.toLowerCase().replace(/[-\s]/g, '');
+                    if(normalizedItemName.includes(normalizedQuery)) {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.style = "width: 80px; text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); padding: 5px; border-radius: 10px; background: rgba(0,0,0,0.2);";
+                        itemDiv.title = "Click to delete this item";
+                        itemDiv.innerHTML = `<img src="${item.img}" style="width:100%; border-radius:5px;"><br><small style="font-size:9px;">${item.name}</small><br><b style="color:#EA4335; font-size:9px;">Delete</b>`;
+                        itemDiv.onclick = () => deleteSpecificItem(item.name);
+                        resultsDiv.appendChild(itemDiv);
+                    }
+                });
+            }
+        }
+
+        function deleteSpecificItem(nameToDelete) {
+            if(!confirm(`Are you sure you want to delete "${nameToDelete}"?`)) return;
+
+            let savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
+            let found = false;
+
+            for(let locId in savedItems) {
+                let initialLength = savedItems[locId].length;
+                savedItems[locId] = savedItems[locId].filter(item => item.name.toLowerCase() !== nameToDelete.toLowerCase());
+                if(savedItems[locId].length < initialLength) found = true;
+            }
+
+            if(found) {
+                localStorage.setItem('showroomItems', JSON.stringify(savedItems));
+                alert("Item deleted.");
+                location.reload();
+            } else {
+                alert("No item found with that name.");
+            }
+        }
+
+        function filterLocations() {
+            const rawInput = document.getElementById('locationSearch').value.toLowerCase();
+            const normalizedInput = rawInput.replace(/[-\s]/g, '');
+            let grid = document.getElementById('locationsGrid');
+            let status = document.getElementById('statusText');
+            let cards = document.getElementsByClassName('location-card');
+
+            if (rawInput.length > 0) {
+                grid.style.display = 'grid';
+                status.style.display = 'block';
+            } else {
+                grid.style.display = 'none';
+                status.style.display = 'none';
+            }
+
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
+                let items = cards[i].getElementsByClassName('item-box');
+                let foundItem = false;
+
+                for(let j=0; j < items.length; j++) {
+                    let itemName = items[j].getAttribute('data-name').toLowerCase();
+                    let normalizedItemName = itemName.replace(/[-\s]/g, '');
+                    if(normalizedItemName.includes(normalizedInput)) {
+                        items[j].style.display = "block";
+                        foundItem = true;
+                    } else {
+                        items[j].style.display = (rawInput === "") ? "block" : "none";
+                    }
+                }
+
+                if (title.includes(rawInput) || foundItem) {
+                    cards[i].style.display = "block";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        function goBack() {
+            document.getElementById('locationSearch').value = "";
+            document.getElementById('locationsGrid').style.display = 'none';
+            document.getElementById('statusText').style.display = 'none';
+        }
+
+        // --- NEW FUNCTIONS FOR THE ADDED BUTTON ---
+        function openNewShowroomPage() {
+            const overlay = document.getElementById('showroomOverlay');
+            const overlayContainer = document.getElementById('overlayContainer');
+            const originalGrid = document.getElementById('locationsGrid');
+            
+            // Grid ko temporary show karte hain clone ke liye
+            originalGrid.style.display = 'grid';
+            
+            // Content ko clone karte hain naye page ke liye
+            overlayContainer.innerHTML = originalGrid.outerHTML;
+            const clonedGrid = overlayContainer.querySelector('.locations-grid');
+            clonedGrid.style.display = 'grid';
+            
+            // Cloned cards ke back buttons hide kar dete hain
+            const backBtns = clonedGrid.querySelectorAll('.btn-back');
+            backBtns.forEach(btn => btn.style.display = 'none');
+
+            // Show all items in cloned grid
+            const cards = clonedGrid.getElementsByClassName('location-card');
+            for (let i = 0; i < cards.length; i++) {
+                cards[i].style.display = "block";
+            }
+
+            overlay.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Stop background scrolling
+        }
+
+        function closeShowroomPage() {
+            document.getElementById('showroomOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
+            
+            // Original grid ko wapis hide kar dete hain agar search nahi hai
+            if(document.getElementById('locationSearch').value === "") {
+                document.getElementById('locationsGrid').style.display = 'none';
+            }
+        }
+
     </script>
-
-    <script src="script.js"></script>
 
 </body>
 </html>
