@@ -1,407 +1,286 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Showroom - Luxury Experience</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tic Tac Toe - Pro</title>
 
-        /* --- Premium Animated Background --- */
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            height: 100vh;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow: hidden;
-            background: linear-gradient(45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  :root {
+    --bg-dark: #1a1f26;
+    --header-dark: #111;
+    --green-accent: #0d6144;
+    --red-accent: #da3633;
+    --input-bg: #333;
+    --text-gray: #8b949e;
+    --yellow-accent: #f1c40f;
+    --blue-accent: #3498db;
+}
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+body { background-color: var(--bg-dark); color: white; overflow-x: hidden; }
 
-        header {
-            width: 100%;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(15px); 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
+/* Updated Nav: Removed hamburger and centered logo */
+.top-nav { 
+    background: var(--header-dark); 
+    padding: 12px; 
+    display: flex; 
+    flex-direction: column; /* Added to stack Tic Tac Toe and Showroom */
+    justify-content: center; 
+    align-items: center; 
+    border-bottom: 1px solid #333; 
+}
+.logo-text { font-weight: 800; font-size: 1.2rem; color: var(--yellow-accent); }
+/* Showroom Text Style */
+.showroom-text { font-size: 1rem; color: white; margin-top: 2px; font-weight: bold; }
 
-        .share-btn {
-            position: absolute;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.banner-bar { background-color: #0d4429; display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; font-size: 13px; }
 
-        .share-btn:hover { background: white; color: #333; }
+.action-btns { display: flex; gap: 5px; }
 
-        .header-title {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: 5px;
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
+.btn-top { padding: 5px 10px; border: none; border-radius: 3px; font-weight: bold; color: white; cursor: pointer; font-size: 11px; }
+.btn-deposit { background: #238636; }
 
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 20px;
-            z-index: 10;
-        }
+.btn-main { padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; color: white; cursor: pointer; background-color: var(--green-accent); }
 
-        .logo {
-            font-size: clamp(65px, 18vw, 130px);
-            font-weight: 900;
-            margin-bottom: 40px;
-            letter-spacing: -4px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
-            user-select: none;
-            cursor: pointer; /* Clickable for hidden admin */
-        }
+.btn-back { background: var(--red-accent); color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 5px; margin-bottom: 10px; }
 
-        .logo .s { color: #4285F4; }
-        .logo .h { color: #EA4335; }
-        .logo .o1 { color: #FBBC05; }
-        .logo .o2 { color: #4285F4; }
-        .logo .w { color: #34A853; }
-        .logo .r { color: #EA4335; }
-        .logo .o3 { color: #FBBC05; }
-        .logo .m { color: #34A853; }
+.container { padding: 15px; }
 
-        .search-wrapper {
-            width: 100%;
-            max-width: 650px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px;
-            border-radius: 60px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            display: flex;
-        }
+#mainDashboard { display: block; text-align: center; padding-top: 50px; }
+#amountScreen, #qrScreen, #uploadModal { display: none; }
 
-        .search-bar {
-            width: 100%;
-            padding: 18px 30px;
-            font-size: 20px;
-            border: none;
-            outline: none;
-            background: transparent;
-            color: white;
-        }
+.amount-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 15px; }
+.amt-box { border: 1px solid #444; padding: 10px 0; text-align: center; font-size: 12px; cursor: pointer; background: transparent; }
 
-        .search-bar::placeholder { color: rgba(255, 255, 255, 0.7); }
+.amount-input-wrapper { background: #12161c; display: flex; align-items: center; padding: 12px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #333; }
 
-        .button-container {
-            margin-top: 50px;
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+.overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 1000; overflow-y: auto; }
 
-        .btn {
-            padding: 16px 40px;
-            font-size: 16px;
-            font-weight: 700;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
+.qr-card { background: #242c37; padding: 20px; border-radius: 4px; text-align: center; margin-top: 10px; }
 
-        .btn-search { background: white; color: #333; }
-        .btn-open { background: rgba(0, 0, 0, 0.3); color: white; border: 1px solid white; }
+.qr-img-box { width: 100%; max-width: 240px; background: white; margin: 15px auto; padding: 10px; border-radius: 8px; }
+.qr-img-box img { width: 100%; height: auto; display: block; }
 
-        /* --- Admin UI Hidden --- */
-        #admin-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 5000;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
+/* Google Style Search Box Styling */
+.google-search-container {
+    margin: 20px auto 40px auto;
+    max-width: 500px;
+    width: 90%;
+}
+.search-box-wrapper {
+    background: white;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+}
+.search-box-wrapper input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    font-size: 16px;
+    color: #202124;
+    padding: 0 10px;
+}
+.search-box-wrapper i {
+    color: #9aa0a6;
+    font-size: 18px;
+}
 
-        .admin-box {
-            background: #222;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            border: 1px solid #444;
-        }
-
-        .admin-input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border: 1px solid #444;
-            background: #111;
-            color: white;
-        }
-
-        .admin-btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            background: #4285F4;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* --- Door Page --- */
-        #door-page {
-            position: fixed;
-            top: 0; left: 100%; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            z-index: 2000;
-            transition: 0.5s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-y: auto;
-            padding-top: 100px;
-        }
-
-        #door-page.active { left: 0; }
-
-        .location-section { margin-top: 50px; text-align: left; width: 90%; }
-        .location-title { font-size: 24px; border-left: 5px solid gold; padding-left: 15px; margin-bottom: 20px; color: white; }
-        .showroom-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-        .gallery-item { border-radius: 15px; overflow: hidden; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
-        .gallery-item img { width: 100%; height: 200px; object-fit: cover; }
-        .item-info { padding: 10px; text-align: center; color: white; font-size: 14px; }
-
-        footer { position: absolute; bottom: 25px; color: rgba(255,255,255,0.8); font-size: 14px; }
-    </style>
+.upload-box { border: 2px dashed #4a5568; padding: 30px; text-align: center; color: #8b949e; margin: 15px 0; border-radius: 4px; cursor: pointer; }
+</style>
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="admin-overlay">
-        <div class="admin-box" id="login-box">
-            <h2>Admin Login</h2>
-            <input type="password" id="passInput" class="admin-input" placeholder="Password">
-            <button class="admin-btn" onclick="checkPassword()">Login</button>
-            <p onclick="closeAdmin()" style="text-align:center; margin-top:10px; cursor:pointer; font-size:12px;">Close</p>
+    <header class="top-nav">
+        <div class="logo-section" onclick="location.reload()" style="cursor:pointer; text-align: center;">
+            <div class="showroom-text">Showroom</div>
         </div>
-        <div class="admin-box" id="add-box" style="display:none;">
-            <h2>Add New Sample</h2>
-            <input type="text" id="locInput" class="admin-input" placeholder="Location Name">
-            <input type="text" id="itemName" class="admin-input" placeholder="Item Name">
-            <input type="text" id="imgUrl" class="admin-input" placeholder="Image URL (Optional)">
-            <label style="font-size: 12px; color: #888;">OR Upload Photo:</label>
-            <input type="file" id="fileInput" class="admin-input" accept="image/*" style="padding: 5px;">
-            <button class="admin-btn" onclick="saveToFirebase()" style="background:#34A853;">Add Website Per</button>
-            <button class="admin-btn" onclick="closeAdmin()" style="background:#EA4335; margin-top:10px;">Exit</button>
-        </div>
-    </div>
-
-    <header>
-        <button class="share-btn" onclick="shareWebsite()"><span>Share</span></button>
-        <div class="header-title">SHOWROOM</div>
     </header>
 
-    <div class="main-content">
-        <div class="logo" ondblclick="handleLogoClick()" onclick="handleLogoClickMobile()">
-            <span class="s">S</span><span class="h">h</span><span class="o1">o</span><span class="o2">w</span><span class="w">r</span><span class="r">o</span><span class="o3">o</span><span class="m">m</span>
-        </div>
-
-        <div class="search-wrapper">
-            <input type="text" id="mainSearch" class="search-bar" placeholder="Experience the Luxury...">
-        </div>
-
-        <div class="button-container">
-            <button class="btn btn-search" onclick="triggerSearch()">Search Now</button>
-            <button class="btn btn-open" onclick="openDoor()">Open Door Showroom</button>
-        </div>
+    <div class="banner-bar">
+        <span></span>
+        <div class="action-btns">
+            </div>
     </div>
 
-    <div id="door-page">
-        <header><div class="header-title">Welcome Showroom</div></header>
-        <div class="welcome-content" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-            <h1 style="color:white;">Luxury Collections</h1>
-            <div id="showroomGallery" style="width:90%;"></div>
-            <button onclick="closeDoor()" style="margin:50px; padding:15px 30px; border-radius:30px; cursor:pointer;">Close Door</button>
-        </div>
-    </div>
-
-    <footer>&copy; 2026 Showroom Elite</footer>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <div class="container" id="mainDashboard">
         
-        const firebaseConfig = {
-          apiKey: "AIzaSyB_b97VYqxV4cmNfQPCdXBfRDLG-Wjzlas",
-          authDomain: "showroom-6b354.firebaseapp.com",
-          projectId: "showroom-6b354",
-          storageBucket: "showroom-6b354.firebasestorage.app",
-          messagingSenderId: "261135013864",
-          appId: "1:261135013864:web:2f718ebf2b7a411852365d"
-        };
+        <div class="google-search-container">
+            <h1 style="color: white; margin-bottom: 20px; font-size: 2.5rem; font-weight: 500;">
+                <span style="color: #4285F4;">S</span><span style="color: #EA4335;">h</span><span style="color: #FBBC05;">o</span><span style="color: #4285F4;">w</span><span style="color: #34A853;">r</span><span style="color: #EA4335;">o</span><span style="color: #FBBC05;">o</span><span style="color: #34A853;">m</span>
+            </h1>
+            <div class="search-box-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search Showroom or type a URL">
+                <i class="fas fa-microphone"></i>
+            </div>
+        </div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        <div style="color:var(--text-gray); margin-bottom: 30px;">
+            <p style="font-size:12px;">Select 'Open Door Showroom' to add coins.</p>
+        </div>
 
-        let allFirebaseData = [];
-        const galleryContainer = document.getElementById('showroomGallery');
+        <button class="btn-main btn-deposit" style="width:100%; margin-bottom: 10px;" onclick="openAmountScreen('Deposit')">
+            Open Door Showroom
+        </button>
 
-        // Fetch Data
-        const q = query(collection(db, "photos"), orderBy("createdAt", "desc"));
-        onSnapshot(q, (snapshot) => {
-            allFirebaseData = [];
-            snapshot.forEach((doc) => allFirebaseData.push(doc.data()));
-            renderGallery(document.getElementById('mainSearch').value);
-        });
+    </div>
 
-        // Add Data
-        window.saveToFirebase = async function() {
-            const loc = document.getElementById('locInput').value;
-            const item = document.getElementById('itemName').value;
-            let url = document.getElementById('imgUrl').value;
-            const file = document.getElementById('fileInput').files[0];
+    <div id="amountScreen" class="container">
+        <button class="btn-back" onclick="location.reload()" style="background:#da3633;">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
 
-            if(!loc || !item) return alert("Location aur Item Name bharna zaroori hai!");
+        <div class="amount-grid">
+            <div class="amt-box" onclick="setAmount(300, 'adminQR'); goToQR();" style="font-size: 10px; font-weight: bold;">Welcome Hall</div>
+            <div class="amt-box" onclick="setAmount(500, 'urbanQR'); goToQR();" style="font-size: 10px; font-weight: bold;">Urban Walk</div>
+            <div class="amt-box" onclick="setAmount(1000, 'electraQR'); goToQR();" style="font-size: 10px; font-weight: bold;">Elactra</div>
+            <div class="amt-box" onclick="setAmount(5000, 'prayerQR'); goToQR();" style="font-size: 10px; font-weight: bold;">Prayer Hall</div>
+            <div class="amt-box" onclick="setAmount(10000, 'amenitiesQR'); goToQR();" style="font-size: 9px; font-weight: bold;">Public Amenities</div>
+        </div>
 
-            // Function to handle Firestore Save
-            const uploadToDB = async (finalUrl) => {
-                await addDoc(collection(db, "photos"), {
-                    location: loc,
-                    item: item,
-                    url: finalUrl,
-                    createdAt: serverTimestamp()
-                });
-                alert("Success! Website par add ho gaya.");
-                document.getElementById('itemName').value = "";
-                document.getElementById('imgUrl').value = "";
-                document.getElementById('fileInput').value = "";
-            };
+        <div class="amount-input-wrapper">
+            <div onclick="adjustAmount(-100)" style="padding:0 15px; cursor:pointer;">
+                <i class="fas fa-minus"></i>
+            </div>
+            <div id="amtLabel" style="flex-grow:1; text-align:center; font-weight:bold;">Amount</div>
+            <div onclick="adjustAmount(100)" style="padding:0 15px; cursor:pointer;">
+                <i class="fas fa-plus"></i>
+            </div>
+        </div>
 
-            // Logic: If file is selected, convert to base64, else use URL or Placeholder
-            if(file) {
-                const reader = new FileReader();
-                reader.onloadend = async function() {
-                    await uploadToDB(reader.result);
-                };
-                reader.readAsDataURL(file);
-            } else {
-                // If no URL and no File, use a placeholder or empty
-                const finalUrl = url ? url : "https://via.placeholder.com/400x300?text=No+Photo";
-                await uploadToDB(finalUrl);
-            }
-        };
+        </div>
 
-        function renderGallery(filter = "") {
-            galleryContainer.innerHTML = "";
-            const lowerFilter = filter.toLowerCase();
+    <div id="qrScreen" class="container">
+        <button class="btn-back" onclick="openAmountScreen('Deposit')" style="background:#da3633;">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
 
-            // All unique locations
-            const locations = ["Welcome Hall", "Urban Work", "Electra", "Public Amenities"];
-            allFirebaseData.forEach(d => { if(!locations.includes(d.location)) locations.push(d.location); });
+        <div style="font-size: 14px; margin-bottom: 10px;">
+            Selected Amount: 
+            <span id="finalAmt" style="color:var(--yellow-accent);">₹0</span>
+        </div>
 
-            locations.forEach(loc => {
-                let items = allFirebaseData.filter(i => i.location === loc);
-                
-                // Static Default Items
-                if(loc === "Welcome Hall") {
-                    items.push({item:"TL14", url:"https://via.placeholder.com/400x300?text=TL14"});
-                    items.push({item:"TL41", url:"https://via.placeholder.com/400x300?text=TL41"});
-                }
+        <div class="qr-card">
+            <h4 style="margin-bottom:5px;">IMRAN AHMAD ANSARI</h4>
+            <p style="font-size:12px; color:#8b949e;">Scan & Pay Using PhonePe App</p>
+            <hr style="border:0; border-top:1px solid #444; margin:10px 0;">
 
-                const filtered = items.filter(i => (i.item && i.item.toLowerCase().includes(lowerFilter)) || (loc && loc.toLowerCase().includes(lowerFilter)));
-                if(filtered.length === 0 && filter !== "") return;
+            <div class="qr-img-box">
+                <img id="main-qr-image" src="https://i.ibb.co/pBfV57Bq/1000082467.jpg" alt="QR Code">
+            </div>
 
-                const sec = document.createElement('div');
-                sec.className = "location-section";
-                sec.innerHTML = `<h2 class="location-title">${loc}</h2><div class="showroom-gallery"></div>`;
-                const grid = sec.querySelector('.showroom-gallery');
+            <p style="font-size:11px; color:#8b949e;">(Min: 300 Max: 100000)</p>
 
-                filtered.forEach(item => {
-                    grid.innerHTML += `<div class="gallery-item"><img src="${item.url}"><div class="item-info">${item.item}</div></div>`;
-                });
-                galleryContainer.appendChild(sec);
-            });
-        }
+            <button class="btn-main" style="width:100%; margin-top:15px;" onclick="openUploadModal()">Pay Now</button>
+        </div>
+    </div>
 
-        window.triggerSearch = () => { renderGallery(document.getElementById('mainSearch').value); openDoor(); };
-        document.getElementById('mainSearch').addEventListener('input', (e) => renderGallery(e.target.value));
-    </script>
+    <div id="uploadModal" class="overlay" style="background: rgba(0,0,0,0.9);">
+        <div style="padding: 20px; max-width: 400px; margin: 50px auto; background: var(--bg-dark); border-radius: 8px; border-top: 3px solid var(--green-accent);">
 
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                <h4 style="color:var(--yellow-accent);">Deposit</h4>
+                <i class="fas fa-times" onclick="closeUploadModal()" style="cursor:pointer;"></i>
+            </div>
+
+            <p style="font-size:12px; color:var(--text-gray);">
+                Image Upload <span style="color:red;">*</span>
+            </p>
+
+            <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-plus-circle" style="font-size:24px;"></i><br>
+                <span id="fileNameDisplay" style="font-size:12px;">upload payment screenshot</span>
+                <input type="file" id="fileInput" style="display:none;" onchange="updateFileName(this)">
+            </div>
+
+            <button class="btn-main" style="width:100%;" onclick="finalSubmit()">Submit</button>
+        </div>
+    </div>
     <script>
-        // Hidden Admin Login Logic
-        let clickCount = 0;
-        function handleLogoClick() { openAdmin(); } // For Desktop Double Click
-        function handleLogoClickMobile() {
-            clickCount++;
-            if (clickCount === 3) { openAdmin(); clickCount = 0; }
-            setTimeout(() => { clickCount = 0; }, 1000);
-        }
+let currentAmount = 0;
+let selectedCategoryKey = 'adminQR'; // Default key
 
-        function openAdmin() { document.getElementById('admin-overlay').style.display = 'flex'; }
-        function closeAdmin() { document.getElementById('admin-overlay').style.display = 'none'; }
+window.onload = function() {
+    // Initial default load
+    const savedQR = localStorage.getItem('adminQR');
+    if(savedQR) {
+        document.getElementById('main-qr-image').src = savedQR;
+    }
+}
 
-        function checkPassword() {
-            if(document.getElementById('passInput').value === "Imran123") {
-                document.getElementById('login-box').style.display = 'none';
-                document.getElementById('add-box').style.display = 'block';
-            } else { alert("Galat Password!"); }
-        }
+function openAmountScreen(mode) {
+    document.getElementById('mainDashboard').style.display = 'none';
+    document.getElementById('amountScreen').style.display = 'block';
+    document.getElementById('qrScreen').style.display = 'none';
+}
 
-        function openDoor() { document.getElementById('door-page').classList.add('active'); }
-        function closeDoor() { document.getElementById('door-page').classList.remove('active'); }
+function setAmount(v, key) { 
+    currentAmount = v; 
+    selectedCategoryKey = key || 'adminQR'; 
+    updateUI(); 
+}
 
-        function shareWebsite() {
-            const data = { title: 'Showroom', url: 'https://kuwaitpm786-creator.github.io/imran.showroom/' };
-            if (navigator.share) navigator.share(data);
-            else { navigator.clipboard.writeText(data.url); alert("Link Copied!"); }
-        }
+function adjustAmount(v) { 
+    currentAmount += v; 
+    if(currentAmount < 0) currentAmount = 0; 
+    updateUI(); 
+}
+
+function updateUI() { 
+    document.getElementById('amtLabel').innerText = currentAmount > 0 ? "₹" + currentAmount : "Amount"; 
+}
+
+function goToQR() {
+    if(currentAmount < 300) return alert("Minimum ₹300 required");
+    
+    // Load image based on the button clicked
+    const savedQR = localStorage.getItem(selectedCategoryKey);
+    if(savedQR) {
+        document.getElementById('main-qr-image').src = savedQR;
+    } else {
+        // Fallback default image if nothing saved for this category
+        document.getElementById('main-qr-image').src = "https://i.ibb.co/pBfV57Bq/1000082467.jpg";
+    }
+
+    document.getElementById('amountScreen').style.display = 'none';
+    document.getElementById('qrScreen').style.display = 'block';
+    document.getElementById('finalAmt').innerText = "₹" + currentAmount;
+}
+
+function openUploadModal() { 
+    document.getElementById('uploadModal').style.display = 'block'; 
+}
+
+function closeUploadModal() { 
+    document.getElementById('uploadModal').style.display = 'none'; 
+}
+
+function updateFileName(input) {
+    if(input.files && input.files[0]) {
+        document.getElementById('fileNameDisplay').innerText = "Selected: " + input.files[0].name;
+    }
+}
+
+function finalSubmit() {
+    if(!document.getElementById('fileInput').files[0]) 
+        return alert("Please upload screenshot!");
+
+    alert("Deposit Request Submitted Successfully!");
+    location.reload();
+}
+
+/* toggleReport function and logic removed as requested */
     </script>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
