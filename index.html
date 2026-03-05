@@ -2,703 +2,428 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Showroom | Premium Locator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
-    
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tic Tac Toe - Pro</title>
 
-    <style>
-        :root {
-            --primary-color: #1a1a1a;
-            --accent-color: #c5a059; /* Gold accent */
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --gold-gradient: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  :root {
+    --bg-dark: #1a1f26;
+    --header-dark: #111;
+    --green-accent: #0d6144;
+    --red-accent: #da3633;
+    --input-bg: #333;
+    --text-gray: #8b949e;
+    --yellow-accent: #f1c40f;
+    --blue-accent: #3498db;
+}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', 'Roboto', sans-serif; }
+body { 
+    background: linear-gradient(45deg, #1a1f26, #23a6d5, #0d6144, #1a1f26);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: white; 
+    overflow-x: hidden; 
+}
 
-        /* --- Premium Animated Mesh Gradient Background --- */
-        body {
-            font-family: 'Poppins', 'Inter', sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: white;
-            overflow-x: hidden;
-        }
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+.top-nav { 
+    background: rgba(17, 17, 17, 0.8); 
+    backdrop-filter: blur(15px);
+    padding: 12px; 
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    border-bottom: 1px solid rgba(255,255,255,0.1); 
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.showroom-text { 
+    font-size: 1.2rem; 
+    letter-spacing: 3px;
+    background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 2px; 
+    font-weight: bold; 
+}
 
-        /* Floating Blurred Background Circles */
-        body::before, body::after {
-            content: '';
-            position: fixed;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            filter: blur(60px);
-            z-index: -1;
-        }
-        body::before { top: -100px; left: -100px; }
-        body::after { bottom: -100px; right: -100px; }
+.banner-bar { background-color: rgba(13, 68, 41, 0.8); display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; font-size: 13px; }
 
-        /* --- Fixed Frosty Glass Header --- */
-        nav {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            border-bottom: 1px solid var(--glass-border);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
+.btn-main { 
+    padding: 16px 40px; 
+    border: none; 
+    border-radius: 50px; 
+    font-weight: bold; 
+    color: white; 
+    cursor: pointer; 
+    background-color: var(--green-accent); 
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.btn-main:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
 
-        /* Metallic Gold Title */
-        .header-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 3px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
+.btn-back { background: var(--red-accent); color: white; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 5px; margin-bottom: 10px; }
 
-        .admin-link {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            padding: 8px 15px;
-            border-radius: 20px;
-            background: rgba(0,0,0,0.2);
-        }
+.container { padding: 15px; }
 
-        .admin-link:hover { background: white; color: black; }
+#mainDashboard { display: block; text-align: center; padding-top: 50px; }
+#amountScreen, #qrScreen, #uploadModal { display: none; }
 
-        /* --- Main Content Layout --- */
-        .container {
-            max-width: 1100px;
-            margin: 120px auto 40px;
-            padding: 0 20px;
-            text-align: center;
-        }
+.amount-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+    gap: 15px; 
+    margin-bottom: 15px; 
+}
+.amt-box { 
+    border: 1px solid rgba(255,255,255,0.2); 
+    padding: 20px 10px; 
+    text-align: center; 
+    font-size: 14px; 
+    cursor: pointer; 
+    background: rgba(255,255,255,0.1); 
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+}
+.amt-box:hover { background: white; color: black; }
 
-        /* Google-Style Multi-Color Logo */
-        .logo-main {
-            font-size: clamp(3rem, 10vw, 5rem);
-            font-weight: 900;
-            margin-bottom: 30px;
-            letter-spacing: -3px;
-            user-select: none;
-        }
-        .logo-main span:nth-child(1) { color: #4285F4; } /* S */
-        .logo-main span:nth-child(2) { color: #EA4335; } /* H */
-        .logo-main span:nth-child(3) { color: #FBBC05; } /* O */
-        .logo-main span:nth-child(4) { color: #4285F4; } /* W */
-        .logo-main span:nth-child(5) { color: #34A853; } /* R */
-        .logo-main span:nth-child(6) { color: #EA4335; } /* O */
-        .logo-main span:nth-child(7) { color: #FBBC05; } /* O */
-        .logo-main span:nth-child(8) { color: #34A853; } /* M */
+.overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 1000; overflow-y: auto; }
 
-        /* --- Glassmorphism Search Box --- */
-        .search-box {
-            position: relative;
-            max-width: 650px;
-            margin: 0 auto 30px; /* Adjusted margin to accommodate button below */
-            background: var(--glass-bg);
-            padding: 8px;
-            border-radius: 60px;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            transition: all 0.4s ease;
-        }
+.qr-card { background: #242c37; padding: 20px; border-radius: 4px; text-align: center; margin-top: 10px; }
 
-        .search-box:focus-within {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.03);
-        }
+.qr-img-box { width: 100%; max-width: 240px; background: white; margin: 15px auto; padding: 10px; border-radius: 8px; cursor: pointer; }
+.qr-img-box img { width: 100%; height: auto; display: block; }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 15px 30px;
-            border-radius: 60px;
-            border: none;
-            font-size: 1.2rem;
-            outline: none;
-            background: transparent;
-            color: white;
-        }
+/* Sample Details Styling on QR Page */
+.sample-details-box {
+    margin-top: 20px;
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: left;
+    border-left: 4px solid var(--yellow-accent);
+}
+.sample-details-box h4 { color: var(--yellow-accent); margin-bottom: 10px; font-size: 14px; }
+.sample-details-box p { font-size: 13px; line-height: 1.6; white-space: pre-line; }
 
-        input[type="text"]::placeholder { color: rgba(255,255,255,0.7); }
+/* Search Suggestions */
+.google-search-container { margin: 20px auto 10px auto; max-width: 600px; width: 90%; position: relative; }
+.search-box-wrapper {
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    padding: 12px 25px;
+    border-radius: 60px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+.search-box-wrapper input { border: none; outline: none; flex-grow: 1; font-size: 18px; color: white; background: transparent; }
 
-        /* --- Premium Buttons --- */
-        .btn-open-door {
-            background: white;
-            color: #333;
-            padding: 16px 40px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
+#searchSuggestions {
+    position: absolute; top: 100%; left: 5%; right: 5%;
+    background: rgba(26, 31, 38, 0.98);
+    border-radius: 15px; margin-top: 10px;
+    max-height: 300px; overflow-y: auto; display: none;
+    z-index: 1100; border: 1px solid rgba(255,255,255,0.1);
+}
+.suggestion-item { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; text-align: left; }
+.suggestion-item span { color: var(--yellow-accent); font-size: 11px; display: block; }
 
-        .btn-open-door:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-            background: #f0f0f0;
-        }
+.luxury-logo { font-size: clamp(50px, 12vw, 80px); font-weight: 900; margin-bottom: 30px; }
+.highlight-box { border: 2px solid var(--yellow-accent) !important; background: rgba(241, 196, 15, 0.2) !important; transform: scale(1.05); }
 
-        .btn-back {
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-            border: 1px solid var(--glass-border);
-            padding: 8px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: 0.3s;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-back:hover { background: white; color: black; }
-
-        /* --- Gallery & Cards Design --- */
-        .locations-grid {
-            display: none;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .location-card {
-            background: var(--glass-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            padding: 25px;
-            text-align: left;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-        }
-
-        .location-card:hover {
-            transform: translateY(-10px);
-            border-color: #fcf6ba;
-        }
-
-        .img-container img {
-            width: 100%;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            transition: transform 0.5s ease;
-        }
-
-        .location-card:hover .img-container img {
-            transform: scale(1.05);
-        }
-
-        .location-card h2 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .location-card p {
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-
-        /* --- Admin Panel Styling (Glassmorphism) --- */
-        #adminPanel {
-            display: none;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(20px);
-            padding: 40px;
-            margin-top: 50px;
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-        }
-
-        #adminPanel h3 {
-            margin: 20px 0 15px;
-            color: #fcf6ba;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .admin-input {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 10px 0;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--glass-border);
-            border-radius: 50px;
-            color: white;
-            outline: none;
-        }
-
-        .admin-input:focus {
-            background: rgba(255,255,255,0.2);
-            border-color: white;
-        }
-
-        select.admin-input {
-            appearance: none;
-            cursor: pointer;
-        }
-
-        .status {
-            font-style: italic;
-            color: #fcf6ba;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        hr { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 30px 0; }
-
-        footer {
-            margin-top: 50px;
-            padding: 20px;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            letter-spacing: 1px;
-        }
-
-        /* --- New Showroom Page Overlay --- */
-        #showroomOverlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
-            z-index: 2000;
-            overflow-y: auto;
-            padding-bottom: 50px;
-        }
-
-        #showroomOverlay nav {
-            position: sticky;
-        }
-
-    </style>
+/* --- Full Screen Image Zoom & Pan CSS --- */
+#imageZoomOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 2000;
+    overflow: hidden;
+    touch-action: none; /* Prevents default browser scaling */
+}
+#zoomContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#zoomContainer img {
+    max-width: 100%;
+    max-height: 100%;
+    transform-origin: center;
+    transition: transform 0.1s ease-out;
+}
+.close-zoom-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: white;
+    color: black;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2100;
+}
+</style>
 </head>
 <body>
 
-    <nav>
-        <div class="header-title">SHOWROOM</div>
-        <a href="#" class="admin-link" onclick="toggleAdmin()">Admin Access</a>
-    </nav>
-
-    <div class="container" id="mainHome">
-        <div class="logo-main">
-            <span>S</span><span>H</span><span>O</span><span>W</span><span>R</span><span>O</span><span>O</span><span>M</span>
+    <header class="top-nav">
+        <div onclick="location.reload()" style="cursor:pointer; text-align: center;">
+            <div class="showroom-text">SHOWROOM</div>
         </div>
-        
-        <div class="search-box">
-            <input type="text" id="locationSearch" placeholder="Experience the Luxury (e.g. 'mt1')..." onkeyup="filterLocations()">
+    </header>
+
+    <div class="banner-bar"><span></span></div>
+
+    <div class="container" id="mainDashboard">
+        <div class="google-search-container">
+            <div class="luxury-logo">
+                <span style="color:#4285F4">S</span><span style="color:#EA4335">h</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">w</span><span style="color:#34A853">r</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#34A853">m</span>
+            </div>
+            <div class="search-box-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="mainSearch" placeholder="Search Samples or Locations..." oninput="handleGlobalSearch(this.value)">
+            </div>
+            <div id="searchSuggestions"></div>
         </div>
+        <button class="btn-main btn-deposit" style="width:100%;" onclick="openAmountScreen('Deposit')">Open Door Showroom</button>
+    </div>
 
-        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
-            <button class="btn-open-door" onclick="openNewShowroomPage()" style="background: var(--gold-gradient); color: #1a1a1a;">Open Showroom</button>
-        </div>
-        
-        <div id="statusText" class="status" style="display: none; margin-top: 20px;">Luxury locations discovered</div>
-
-        <div class="locations-grid" id="locationsGrid">
-            
-            <div class="location-card" id="card-welcomehall">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2>Welcome Hall</h2>
-                <p>Step into luxury at our main entrance.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
-            <div class="location-card" id="card-urbanwolk">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2>Urban Wolk</h2>
-                <p>Experience the vibe of modern city life.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
-            <div class="location-card" id="card-electra">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2>Electra</h2>
-                <p>The hub of future electric innovation.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
-            <div class="location-card" id="card-gardan">
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2>Gardan</h2>
-                <p>Refresh your senses in our green zone.</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            </div>
-
-        </div>
-
-        <div id="adminPanel">
-            <button class="btn-back" onclick="toggleAdmin()">← Back</button>
-            
-            <h3>Add New Location</h3>
-            <input type="text" id="newLocId" class="admin-input" placeholder="Unique ID (e.g. card-office)">
-            <input type="text" id="newLocTitle" class="admin-input" placeholder="Location Title">
-            <input type="text" id="newLocDesc" class="admin-input" placeholder="Description">
-            <button class="btn-open-door" onclick="addNewLocation()" style="width: 100%;">Create Location</button>
-            
-            <hr>
-
-            <h3>Upload Content</h3>
-            <select id="uploadType" class="admin-input" onchange="toggleUploadType()">
-                <option value="location">Main Location Photo</option>
-                <option value="item">Specific Item</option>
-            </select>
-            <select id="targetLocation" class="admin-input">
-                <option value="card-welcomehall">Welcome Hall</option>
-                <option value="card-urbanwolk">Urban Wolk</option>
-                <option value="card-electra">Electra</option>
-                <option value="card-gardan">Gardan</option>
-            </select>
-            <input type="text" id="itemName" class="admin-input" placeholder="Item Name" style="display:none;">
-            <input type="file" id="photoFile" class="admin-input" accept="image/*" style="padding: 10px;">
-            <button class="btn-open-door" onclick="uploadPhoto()" style="width: 100%;">Save to Showroom</button>
-            
-            <hr>
-            <h3>Delete Specific Item</h3>
-            <input type="text" id="deleteItemSearch" class="admin-input" placeholder="Search item to delete (e.g. tl10)..." onkeyup="searchItemsToDelete()">
-            <div id="deleteSearchResults" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; justify-content: center;"></div>
+    <div id="amountScreen" class="container">
+        <button class="btn-back" onclick="goToHome()"><i class="fas fa-arrow-left"></i> Back</button>
+        <h2 style="text-align: center; margin-bottom: 20px; color: var(--yellow-accent);">LUXURY COLLECTIONS</h2>
+        <div class="amount-grid" id="locationGrid">
+            <div class="amt-box" data-name="Welcome Hall" onclick="setAmount(0, 'adminQR'); goToQR();">Welcome Hall</div>
+            <div class="amt-box" data-name="Urban Walk" onclick="setAmount(0, 'urbanQR'); goToQR();">Urban Walk</div>
+            <div class="amt-box" data-name="Electra" onclick="setAmount(0, 'electraQR'); goToQR();">Electra</div>
+            <div class="amt-box" data-name="Prayer Hall" onclick="setAmount(0, 'prayerQR'); goToQR();">Prayer Hall</div>
+            <div class="amt-box" data-name="Public Amenities" onclick="setAmount(0, 'amenitiesQR'); goToQR();">Public Amenities</div>
+            <div class="amt-box" data-name="The Garder" onclick="setAmount(0, 'garderQR'); goToQR();">The Garder</div>
+            <div class="amt-box" data-name="The Mall" onclick="setAmount(0, 'mallQR'); goToQR();">The Mall</div>
+            <div class="amt-box" data-name="Sauq-Dome Area" onclick="setAmount(0, 'sauqDomeQR'); goToQR();">Sauq-Dome Area</div>
+            <div class="amt-box" data-name="The Souq" onclick="setAmount(0, 'theSouqQR'); goToQR();">The Souq</div>
+            <div class="amt-box" data-name="Souq-Date Market" onclick="setAmount(0, 'souqDateQR'); goToQR();">Souq-Date Market</div>
+            <div class="amt-box" data-name="Food Court" onclick="setAmount(0, 'foodCourtQR'); goToQR();">Food Court</div>
         </div>
     </div>
 
-    <div id="showroomOverlay">
-        <nav>
-            <div class="header-title">WELCOME SHOWROOM</div>
-            <a href="#" class="admin-link" onclick="closeShowroomPage()">Close Page</a>
-        </nav>
-        <div class="container" id="overlayContainer">
+    <div id="qrScreen" class="container">
+        <button class="btn-back" onclick="openAmountScreen('Deposit')"><i class="fas fa-arrow-left"></i> Back</button>
+        <div class="qr-card">
+            <div class="qr-img-box" onclick="toggleFullScreenZoom()"><img id="main-qr-image" src="" alt="QR"></div>
+            <div class="sample-details-box">
+                <h4>LOCATION SAMPLES:</h4>
+                <p id="locationSamplesText">No samples listed.</p>
+            </div>
             </div>
     </div>
 
-    <center>
-        <footer>&copy; 2026 SHOWROOM | Premium Digital Experience</footer>
-    </center>
+    <div id="imageZoomOverlay">
+        <div class="close-zoom-btn" onclick="closeFullScreenZoom()">&times;</div>
+        <div id="zoomContainer">
+            <img id="zoomTarget" src="" alt="Zoomed View">
+        </div>
+    </div>
 
-    <script>
-        // --- FIREBASE CONFIGURATION ---
+    <div id="uploadModal" class="overlay">
+        <div style="padding: 20px; max-width: 400px; margin: 50px auto; background: var(--bg-dark); border-radius: 8px;">
+            <h4 style="color:var(--yellow-accent);">Submit Payment</h4>
+            <div style="border:2px dashed #444; padding:30px; margin:20px 0; text-align:center;" onclick="document.getElementById('fileInput').click()">
+                <span id="fileNameDisplay">Upload Screenshot</span>
+                <input type="file" id="fileInput" style="display:none;" onchange="updateFileName(this)">
+            </div>
+            <button class="btn-main" style="width:100%;" onclick="location.reload()">Submit</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
         const firebaseConfig = {
-          apiKey: "AIzaSyB_b97VYqxV4cmNfQPCdXBfRDLG-Wjzlas",
-          authDomain: "showroom-6b354.firebaseapp.com",
-          projectId: "showroom-6b354",
-          storageBucket: "showroom-6b354.firebasestorage.app",
-          messagingSenderId: "261135013864",
-          appId: "1:261135013864:web:2f718ebf2b7a411852365d",
-          measurementId: "G-Q8B3XR50PF"
+          apiKey: "AIzaSyDqoWrKntd-qMHTE8u7yd4-2M_C0SbjYHc",
+          authDomain: "gameadda-48c68.firebaseapp.com",
+          databaseURL: "https://gameadda-48c68-default-rtdb.firebaseio.com",
+          projectId: "gameadda-48c68",
+          storageBucket: "gameadda-48c68.firebasestorage.app",
+          messagingSenderId: "333499445245",
+          appId: "1:333499445245:web:5227528c6c0004677ef394",
         };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const analytics = firebase.analytics();
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-        // --- LOGIC REMAINS UNTOUCHED AS PER RULES ---
-        
-        // Load saved images and locations on startup
-        window.onload = function() {
-            const savedLocs = JSON.parse(localStorage.getItem('showroomExtraLocs') || '[]');
-            savedLocs.forEach(loc => createLocationElement(loc.id, loc.title, loc.desc));
-            updateAdminDropdown();
+        let selectedCategoryKey = 'adminQR';
+        let allLocationData = {};
+        let qrData = {};
 
-            const savedImages = JSON.parse(localStorage.getItem('showroomImages') || '{}');
-            const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-            
-            for (let id in savedImages) {
-                const card = document.getElementById(id);
-                if (card) {
-                    card.querySelector('.img-container').innerHTML = `<img src="${savedImages[id]}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
+        // Fetch All Data
+        onValue(ref(db, 'barcodes'), (snap) => qrData = snap.val() || {});
+        onValue(ref(db, 'locationData'), (snap) => allLocationData = snap.val() || {});
+
+        window.handleGlobalSearch = function(query) {
+            const q = query.toLowerCase().trim();
+            const suggest = document.getElementById('searchSuggestions');
+            suggest.innerHTML = "";
+            if(!q) { suggest.style.display="none"; return; }
+            suggest.style.display="block";
+
+            // 1. Search in Locations
+            document.querySelectorAll('.amt-box').forEach(box => {
+                const name = box.getAttribute('data-name');
+                if(name.toLowerCase().includes(q)) {
+                    createSuggestItem(name, "Location", name);
                 }
-            }
+            });
 
-            for (let locId in savedItems) {
-                const card = document.getElementById(locId);
-                if(card) {
-                   const container = card.querySelector('.items-container');
-                   savedItems[locId].forEach(item => {
-                       container.innerHTML += `<div class="item-box" data-name="${item.name}" style="width: 80px; text-align: center;"><img src="${item.img}" style="width:100%; border-radius:5px;"><small style="display:block; margin-top:5px; font-size:10px;">${item.name}</small></div>`;
-                   });
+            // 2. Search in Samples
+            for(let id in allLocationData) {
+                const samples = allLocationData[id].samples || "";
+                if(samples.toLowerCase().includes(q)) {
+                    const locName = document.querySelector(`[onclick*="${id}"]`).getAttribute('data-name');
+                    // Find specific line containing the sample
+                    const lines = samples.split('\n');
+                    lines.forEach(line => {
+                        if(line.toLowerCase().includes(q)) {
+                            createSuggestItem(line, "In: " + locName, locName);
+                        }
+                    });
                 }
             }
         };
 
-        function createLocationElement(id, title, desc) {
-            const grid = document.getElementById('locationsGrid');
-            if(document.getElementById(id)) return;
-            const card = document.createElement('div');
-            card.className = 'location-card';
-            card.id = id;
-            card.innerHTML = `
-                <button class="btn-back" onclick="goBack()">← Back</button>
-                <div class="img-container"></div>
-                <h2>${title}</h2>
-                <p>${desc}</p>
-                <div class="items-container" style="margin-top:15px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-            `;
-            grid.appendChild(card);
+        function createSuggestItem(text, sub, locName) {
+            const div = document.createElement('div');
+            div.className = 'suggestion-item';
+            div.innerHTML = `${text} <span>${sub}</span>`;
+            div.onclick = () => selectSearchResult(locName);
+            document.getElementById('searchSuggestions').appendChild(div);
         }
 
-        function addNewLocation() {
-            const id = document.getElementById('newLocId').value.trim();
-            const title = document.getElementById('newLocTitle').value.trim();
-            const desc = document.getElementById('newLocDesc').value.trim();
-            if(!id || !title) return alert("ID and Title are required");
-            
-            createLocationElement(id, title, desc);
-            const savedLocs = JSON.parse(localStorage.getItem('showroomExtraLocs') || '[]');
-            savedLocs.push({id, title, desc});
-            localStorage.setItem('showroomExtraLocs', JSON.stringify(savedLocs));
-            updateAdminDropdown();
-            alert("Location created!");
+        window.selectSearchResult = function(locName) {
+            document.getElementById('searchSuggestions').style.display="none";
+            document.getElementById('mainSearch').value = "";
+            openAmountScreen();
+            document.querySelectorAll('.amt-box').forEach(box => {
+                if(box.getAttribute('data-name') === locName) {
+                    box.classList.add('highlight-box');
+                    box.style.display = "block";
+                    box.scrollIntoView({behavior:'smooth'});
+                } else { box.style.display = "none"; }
+            });
+        };
+
+        window.goToHome = function() {
+            document.getElementById('mainDashboard').style.display='block';
+            document.getElementById('amountScreen').style.display='none';
+            document.getElementById('qrScreen').style.display='none';
+            document.querySelectorAll('.amt-box').forEach(b => {b.style.display="block"; b.classList.remove('highlight-box')});
+        };
+
+        window.openAmountScreen = function() {
+            document.getElementById('mainDashboard').style.display='none';
+            document.getElementById('amountScreen').style.display='block';
+        };
+
+        window.setAmount = (v, key) => selectedCategoryKey = key;
+
+        window.goToQR = function() {
+            document.getElementById('main-qr-image').src = qrData[selectedCategoryKey] || "";
+            document.getElementById('locationSamplesText').innerText = allLocationData[selectedCategoryKey]?.samples || "No samples listed.";
+            document.getElementById('amountScreen').style.display='none';
+            document.getElementById('qrScreen').style.display='block';
+        };
+
+        window.openUploadModal = () => document.getElementById('uploadModal').style.display='block';
+        window.updateFileName = (i) => document.getElementById('fileNameDisplay').innerText = i.files[0].name;
+
+        // --- IMAGE ZOOM & PAN LOGIC ---
+        let scale = 1, posX = 0, posY = 0, lastX = 0, lastY = 0, isDragging = false;
+        const targetImg = document.getElementById('zoomTarget');
+
+        window.toggleFullScreenZoom = function() {
+            const mainSrc = document.getElementById('main-qr-image').src;
+            if(!mainSrc) return;
+            targetImg.src = mainSrc;
+            document.getElementById('imageZoomOverlay').style.display = 'block';
+            resetZoom();
+        };
+
+        window.closeFullScreenZoom = function() {
+            document.getElementById('imageZoomOverlay').style.display = 'none';
+        };
+
+        function resetZoom() {
+            scale = 1; posX = 0; posY = 0;
+            updateTransform();
         }
 
-        function updateAdminDropdown() {
-            const select = document.getElementById('targetLocation');
-            const cards = document.getElementsByClassName('location-card');
-            select.innerHTML = "";
-            for(let card of cards) {
-                let title = card.querySelector('h2').innerText;
-                let option = document.createElement('option');
-                option.value = card.id;
-                option.text = title;
-                select.add(option);
+        function updateTransform() {
+            targetImg.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+        }
+
+        // Mouse & Touch Interaction for Zoom/Pan
+        const overlay = document.getElementById('imageZoomOverlay');
+
+        overlay.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -0.2 : 0.2;
+            scale = Math.min(Math.max(1, scale + delta), 5);
+            if (scale === 1) { posX = 0; posY = 0; }
+            updateTransform();
+        }, { passive: false });
+
+        overlay.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                isDragging = true;
+                lastX = e.touches[0].clientX - posX;
+                lastY = e.touches[0].clientY - posY;
             }
-        }
+        });
 
-        function toggleAdmin() {
-            let panel = document.getElementById('adminPanel');
-            
-            // If panel is already open, just close it
-            if (panel.style.display === 'block') {
-                panel.style.display = 'none';
-            } else {
-                // Ask for password before opening
-                let password = prompt("Enter Admin Password:");
-                if (password === "Imran123") {
-                    panel.style.display = 'block';
-                } else {
-                    alert("Incorrect Password! Access Denied.");
-                }
+        overlay.addEventListener('touchmove', (e) => {
+            if (isDragging && e.touches.length === 1 && scale > 1) {
+                posX = e.touches[0].clientX - lastX;
+                posY = e.touches[0].clientY - lastY;
+                updateTransform();
             }
-        }
+        });
 
-        function toggleUploadType() {
-            const type = document.getElementById('uploadType').value;
-            document.getElementById('itemName').style.display = (type === 'item') ? 'block' : 'none';
-        }
+        overlay.addEventListener('touchend', () => isDragging = false);
 
-        function uploadPhoto() {
-            const type = document.getElementById('uploadType').value;
-            const locationId = document.getElementById('targetLocation').value;
-            const itemName = document.getElementById('itemName').value;
-            const fileInput = document.getElementById('photoFile');
-            const file = fileInput.files[0];
-            
-            if(!file) return alert("Please select an image file");
-            if(type === 'item' && !itemName) return alert("Please enter item name");
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const url = e.target.result;
-                
-                if(type === 'location') {
-                    const card = document.getElementById(locationId);
-                    card.querySelector('.img-container').innerHTML = `<img src="${url}" style="width:100%; border-radius:10px; margin-bottom:15px;">`;
-                    const savedImages = JSON.parse(localStorage.getItem('showroomImages') || '{}');
-                    savedImages[locationId] = url;
-                    localStorage.setItem('showroomImages', JSON.stringify(savedImages));
-                } else {
-                    const container = document.getElementById(locationId).querySelector('.items-container');
-                    container.innerHTML += `<div class="item-box" data-name="${itemName}" style="width: 80px; text-align: center;"><img src="${url}" style="width:100%; border-radius:5px;"><small style="display:block; margin-top:5px; font-size:10px;">${itemName}</small></div>`;
-                    
-                    const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-                    if(!savedItems[locationId]) savedItems[locationId] = [];
-                    savedItems[locationId].push({name: itemName, img: url});
-                    localStorage.setItem('showroomItems', JSON.stringify(savedItems));
-                }
-
-                alert("Saved successfully!");
-                fileInput.value = "";
-                document.getElementById('itemName').value = "";
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function searchItemsToDelete() {
-            const rawQuery = document.getElementById('deleteItemSearch').value.trim().toLowerCase();
-            const normalizedQuery = rawQuery.replace(/[-\s]/g, '');
-            const resultsDiv = document.getElementById('deleteSearchResults');
-            resultsDiv.innerHTML = "";
-            if(!rawQuery) return;
-
-            const savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-            for(let locId in savedItems) {
-                savedItems[locId].forEach((item) => {
-                    const normalizedItemName = item.name.toLowerCase().replace(/[-\s]/g, '');
-                    if(normalizedItemName.includes(normalizedQuery)) {
-                        const itemDiv = document.createElement('div');
-                        itemDiv.style = "width: 80px; text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); padding: 5px; border-radius: 10px; background: rgba(0,0,0,0.2);";
-                        itemDiv.title = "Click to delete this item";
-                        itemDiv.innerHTML = `<img src="${item.img}" style="width:100%; border-radius:5px;"><br><small style="font-size:9px;">${item.name}</small><br><b style="color:#EA4335; font-size:9px;">Delete</b>`;
-                        itemDiv.onclick = () => deleteSpecificItem(item.name);
-                        resultsDiv.appendChild(itemDiv);
-                    }
-                });
-            }
-        }
-
-        function deleteSpecificItem(nameToDelete) {
-            if(!confirm(`Are you sure you want to delete "${nameToDelete}"?`)) return;
-
-            let savedItems = JSON.parse(localStorage.getItem('showroomItems') || '{}');
-            let found = false;
-
-            for(let locId in savedItems) {
-                let initialLength = savedItems[locId].length;
-                savedItems[locId] = savedItems[locId].filter(item => item.name.toLowerCase() !== nameToDelete.toLowerCase());
-                if(savedItems[locId].length < initialLength) found = true;
-            }
-
-            if(found) {
-                localStorage.setItem('showroomItems', JSON.stringify(savedItems));
-                alert("Item deleted.");
-                location.reload();
-            } else {
-                alert("No item found with that name.");
-            }
-        }
-
-        function filterLocations() {
-            const rawInput = document.getElementById('locationSearch').value.toLowerCase();
-            const normalizedInput = rawInput.replace(/[-\s]/g, '');
-            let grid = document.getElementById('locationsGrid');
-            let status = document.getElementById('statusText');
-            let cards = document.getElementsByClassName('location-card');
-
-            if (rawInput.length > 0) {
-                grid.style.display = 'grid';
-                status.style.display = 'block';
-            } else {
-                grid.style.display = 'none';
-                status.style.display = 'none';
-            }
-
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
-                let items = cards[i].getElementsByClassName('item-box');
-                let foundItem = false;
-
-                for(let j=0; j < items.length; j++) {
-                    let itemName = items[j].getAttribute('data-name').toLowerCase();
-                    let normalizedItemName = itemName.replace(/[-\s]/g, '');
-                    if(normalizedItemName.includes(normalizedInput)) {
-                        items[j].style.display = "block";
-                        foundItem = true;
-                    } else {
-                        items[j].style.display = (rawInput === "") ? "block" : "none";
-                    }
-                }
-
-                if (title.includes(rawInput) || foundItem) {
-                    cards[i].style.display = "block";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
-        }
-
-        function goBack() {
-            document.getElementById('locationSearch').value = "";
-            document.getElementById('locationsGrid').style.display = 'none';
-            document.getElementById('statusText').style.display = 'none';
-        }
-
-        // --- NEW FUNCTIONS FOR THE ADDED BUTTON ---
-        function openNewShowroomPage() {
-            const overlay = document.getElementById('showroomOverlay');
-            const overlayContainer = document.getElementById('overlayContainer');
-            const originalGrid = document.getElementById('locationsGrid');
-            
-            // Grid ko temporary show karte hain clone ke liye
-            originalGrid.style.display = 'grid';
-            
-            // Content ko clone karte hain naye page ke liye
-            overlayContainer.innerHTML = originalGrid.outerHTML;
-            const clonedGrid = overlayContainer.querySelector('.locations-grid');
-            clonedGrid.style.display = 'grid';
-            
-            // Cloned cards ke back buttons hide kar dete hain
-            const backBtns = clonedGrid.querySelectorAll('.btn-back');
-            backBtns.forEach(btn => btn.style.display = 'none');
-
-            // Show all items in cloned grid
-            const cards = clonedGrid.getElementsByClassName('location-card');
-            for (let i = 0; i < cards.length; i++) {
-                cards[i].style.display = "block";
-            }
-
-            overlay.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Stop background scrolling
-        }
-
-        function closeShowroomPage() {
-            document.getElementById('showroomOverlay').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Re-enable scrolling
-            
-            // Original grid ko wapis hide kar dete hain agar search nahi hai
-            if(document.getElementById('locationSearch').value === "") {
-                document.getElementById('locationsGrid').style.display = 'none';
-            }
-        }
-
+        // Double Click/Tap to quick zoom
+        overlay.addEventListener('dblclick', () => {
+            if (scale > 1) resetZoom();
+            else { scale = 2.5; updateTransform(); }
+        });
     </script>
-
 </body>
 </html>
