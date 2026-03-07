@@ -407,8 +407,8 @@ body {
                 lastX = e.touches[0].clientX - posX;
                 lastY = e.touches[0].clientY - posY;
             }
-        });
-
+        })
+        
         overlay.addEventListener('touchmove', (e) => {
             if (isDragging && e.touches.length === 1 && scale > 1) {
                 posX = e.touches[0].clientX - lastX;
