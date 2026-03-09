@@ -106,7 +106,7 @@ body {
 
 .qr-card { background: #242c37; padding: 20px; border-radius: 4px; text-align: center; margin-top: 10px; }
 
-.qr-img-box { width: 100%; max-width: 240px; background: white; margin: 15px auto; padding: 10px; border-radius: 8px; cursor: pointer; }
+.qr-img-box { width: 100%; max-width: 240px; background: white; margin: 15px auto; padding: 10px; border-radius: 8px; }
 .qr-img-box img { width: 100%; height: auto; display: block; }
 
 /* Sample Details Styling on QR Page */
@@ -147,50 +147,6 @@ body {
 
 .luxury-logo { font-size: clamp(50px, 12vw, 80px); font-weight: 900; margin-bottom: 30px; }
 .highlight-box { border: 2px solid var(--yellow-accent) !important; background: rgba(241, 196, 15, 0.2) !important; transform: scale(1.05); }
-
-/* --- Full Screen Image Zoom & Pan CSS --- */
-#imageZoomOverlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.95);
-    z-index: 2000;
-    overflow: hidden;
-    touch-action: none; /* Prevents default browser scaling */
-}
-#zoomContainer {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#zoomContainer img {
-    max-width: 100%;
-    max-height: 100%;
-    transform-origin: center;
-    transition: transform 0.1s ease-out;
-}
-.close-zoom-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: white;
-    color: black;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 2100;
-}
 </style>
 </head>
 <body>
@@ -226,7 +182,7 @@ body {
             <div class="amt-box" data-name="Electra" onclick="setAmount(0, 'electraQR'); goToQR();">Electra</div>
             <div class="amt-box" data-name="Prayer Hall" onclick="setAmount(0, 'prayerQR'); goToQR();">Prayer Hall</div>
             <div class="amt-box" data-name="Public Amenities" onclick="setAmount(0, 'amenitiesQR'); goToQR();">Public Amenities</div>
-            <div class="amt-box" data-name="The Garder" onclick="setAmount(0, 'garderQR'); goToQR();">The Garder</div>
+            <div class="amt-box" data-name="The Garden" onclick="setAmount(0, 'gardenQR'); goToQR();">The Garden</div>
             <div class="amt-box" data-name="The Mall" onclick="setAmount(0, 'mallQR'); goToQR();">The Mall</div>
             <div class="amt-box" data-name="Sauq-Dome Area" onclick="setAmount(0, 'sauqDomeQR'); goToQR();">Sauq-Dome Area</div>
             <div class="amt-box" data-name="The Souq" onclick="setAmount(0, 'theSouqQR'); goToQR();">The Souq</div>
@@ -238,18 +194,12 @@ body {
     <div id="qrScreen" class="container">
         <button class="btn-back" onclick="openAmountScreen('Deposit')"><i class="fas fa-arrow-left"></i> Back</button>
         <div class="qr-card">
-            <div class="qr-img-box" onclick="toggleFullScreenZoom()"><img id="main-qr-image" src="" alt="QR"></div>
+            <div class="qr-img-box"><img id="main-qr-image" src="" alt="QR"></div>
             <div class="sample-details-box">
                 <h4>LOCATION SAMPLES:</h4>
                 <p id="locationSamplesText">No samples listed.</p>
             </div>
-            </div>
-    </div>
-
-    <div id="imageZoomOverlay">
-        <div class="close-zoom-btn" onclick="closeFullScreenZoom()">&times;</div>
-        <div id="zoomContainer">
-            <img id="zoomTarget" src="" alt="Zoomed View">
+            <button class="btn-main" style="width:100%; margin-top:15px;" onclick="openUploadModal()">Pay Now</button>
         </div>
     </div>
 
@@ -364,66 +314,6 @@ body {
 
         window.openUploadModal = () => document.getElementById('uploadModal').style.display='block';
         window.updateFileName = (i) => document.getElementById('fileNameDisplay').innerText = i.files[0].name;
-
-        // --- IMAGE ZOOM & PAN LOGIC ---
-        let scale = 1, posX = 0, posY = 0, lastX = 0, lastY = 0, isDragging = false;
-        const targetImg = document.getElementById('zoomTarget');
-
-        window.toggleFullScreenZoom = function() {
-            const mainSrc = document.getElementById('main-qr-image').src;
-            if(!mainSrc) return;
-            targetImg.src = mainSrc;
-            document.getElementById('imageZoomOverlay').style.display = 'block';
-            resetZoom();
-        };
-
-        window.closeFullScreenZoom = function() {
-            document.getElementById('imageZoomOverlay').style.display = 'none';
-        };
-
-        function resetZoom() {
-            scale = 1; posX = 0; posY = 0;
-            updateTransform();
-        }
-
-        function updateTransform() {
-            targetImg.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-        }
-
-        // Mouse & Touch Interaction for Zoom/Pan
-        const overlay = document.getElementById('imageZoomOverlay');
-
-        overlay.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            const delta = e.deltaY > 0 ? -0.2 : 0.2;
-            scale = Math.min(Math.max(1, scale + delta), 5);
-            if (scale === 1) { posX = 0; posY = 0; }
-            updateTransform();
-        }, { passive: false });
-
-        overlay.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 1) {
-                isDragging = true;
-                lastX = e.touches[0].clientX - posX;
-                lastY = e.touches[0].clientY - posY;
-            }
-        })
-        
-        overlay.addEventListener('touchmove', (e) => {
-            if (isDragging && e.touches.length === 1 && scale > 1) {
-                posX = e.touches[0].clientX - lastX;
-                posY = e.touches[0].clientY - lastY;
-                updateTransform();
-            }
-        });
-
-        overlay.addEventListener('touchend', () => isDragging = false);
-
-        // Double Click/Tap to quick zoom
-        overlay.addEventListener('dblclick', () => {
-            if (scale > 1) resetZoom();
-            else { scale = 2.5; updateTransform(); }
-        });
     </script>
 </body>
 </html>
